@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Diana Fitness">
+    <meta name="theme-color" content="#1a1a2e" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+    <meta name="description" content="Diana Fitness Tracker - Din personliga tränings- och kostapp">
+
+    <title>Diana Fitness</title>
+
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Outfit:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body>
+    <div id="app">
+        <header class="app-header">
+            <div class="header-content">
+                <h1 class="header-title" id="page-title">Recept</h1>
+                <button class="header-action" id="header-action-btn" aria-label="Menyalternativ">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="1"></circle>
+                        <circle cx="19" cy="12" r="1"></circle>
+                        <circle cx="5" cy="12" r="1"></circle>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <main class="app-content">
+            <!-- Recipes Screen -->
+            <section class="screen active" id="screen-recipes" data-screen="recipes">
+                <div class="screen-scroll">
+                    <div class="hero-card">
+                        <div class="hero-card-content">
+                            <span class="hero-label">Dagens Mål</span>
+                            <h2 class="hero-title">1600 kcal</h2>
+                            <div class="macro-summary">
+                                <div class="macro-item">
+                                    <span class="macro-value">117g</span>
+                                    <span class="macro-label">Protein</span>
+                                </div>
+                                <div class="macro-divider"></div>
+                                <div class="macro-item">
+                                    <span class="macro-value">156g</span>
+                                    <span class="macro-label">Kolhydrater</span>
+                                </div>
+                                <div class="macro-divider"></div>
+                                <div class="macro-item">
+                                    <span class="macro-value">55g</span>
+                                    <span class="macro-label">Fett</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hero-card-decoration"></div>
+                    </div>
+
+                    <div class="section-header">
+                        <h3 class="section-title">Måltider</h3>
+                        <button class="section-action">Vecka 1</button>
+                    </div>
+
+                    <div class="meal-cards">
+                        <article class="meal-card" data-meal="breakfast">
+                            <div class="meal-card-icon breakfast">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
+                                    <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
+                                    <line x1="6" y1="1" x2="6" y2="4"></line>
+                                    <line x1="10" y1="1" x2="10" y2="4"></line>
+                                    <line x1="14" y1="1" x2="14" y2="4"></line>
+                                </svg>
+                            </div>
+                            <div class="meal-card-content">
+                                <span class="meal-type">Frukost</span>
+                                <h4 class="meal-name">Overnight oats med bär</h4>
+                                <div class="meal-meta">
+                                    <span class="meal-kcal">480 kcal</span>
+                                    <span class="meal-time">5 min</span>
+                                </div>
+                            </div>
+                            <div class="meal-card-arrow">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </div>
+                        </article>
+
+                        <article class="meal-card" data-meal="lunch">
+                            <div class="meal-card-icon lunch">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path>
+                                    <path d="M7 2v20"></path>
+                                    <path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"></path>
+                                </svg>
+                            </div>
+                            <div class="meal-card-content">
+                                <span class="meal-type">Lunch</span>
+                                <h4 class="meal-name">Pad thai med tofu och räkor</h4>
+                                <div class="meal-meta">
+                                    <span class="meal-kcal">560 kcal</span>
+                                    <span class="meal-time">30 min</span>
+                                </div>
+                            </div>
+                            <div class="meal-card-arrow">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </div>
+                        </article>
+
+                        <article class="meal-card" data-meal="dinner">
+                            <div class="meal-card-icon dinner">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"></path>
+                                    <path d="M8.5 8.5v.01"></path>
+                                    <path d="M16 15.5v.01"></path>
+                                    <path d="M12 12v.01"></path>
+                                    <path d="M11 17v.01"></path>
+                                    <path d="M7 14v.01"></path>
+                                </svg>
+                            </div>
+                            <div class="meal-card-content">
+                                <span class="meal-type">Middag</span>
+                                <h4 class="meal-name">Stekt ris med kyckling</h4>
+                                <div class="meal-meta">
+                                    <span class="meal-kcal">560 kcal</span>
+                                    <span class="meal-time">25 min</span>
+                                </div>
+                            </div>
+                            <div class="meal-card-arrow">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </div>
+                        </article>
+                    </div>
+
+                    <div class="section-header">
+                        <h3 class="section-title">Alla Recept</h3>
+                        <button class="section-action">Filter</button>
+                    </div>
+
+                    <div class="recipe-grid">
+                        <article class="recipe-card">
+                            <div class="recipe-card-image breakfast-gradient">
+                                <span class="recipe-kcal-badge">480 kcal</span>
+                            </div>
+                            <div class="recipe-card-content">
+                                <span class="recipe-category">Frukost</span>
+                                <h4 class="recipe-name">Overnight oats med bär</h4>
+                                <div class="recipe-macros">
+                                    <span>P: 25g</span>
+                                    <span>K: 60g</span>
+                                    <span>F: 15g</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="recipe-card">
+                            <div class="recipe-card-image lunch-gradient">
+                                <span class="recipe-kcal-badge">566 kcal</span>
+                            </div>
+                            <div class="recipe-card-content">
+                                <span class="recipe-category">Lunch</span>
+                                <h4 class="recipe-name">Pad thai med tofu</h4>
+                                <div class="recipe-macros">
+                                    <span>P: 44g</span>
+                                    <span>K: 52g</span>
+                                    <span>F: 20g</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="recipe-card">
+                            <div class="recipe-card-image dinner-gradient">
+                                <span class="recipe-kcal-badge">560 kcal</span>
+                            </div>
+                            <div class="recipe-card-content">
+                                <span class="recipe-category">Middag</span>
+                                <h4 class="recipe-name">Stekt ris med kyckling</h4>
+                                <div class="recipe-macros">
+                                    <span>P: 40g</span>
+                                    <span>K: 55g</span>
+                                    <span>F: 19g</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="recipe-card">
+                            <div class="recipe-card-image breakfast-gradient">
+                                <span class="recipe-kcal-badge">480 kcal</span>
+                            </div>
+                            <div class="recipe-card-content">
+                                <span class="recipe-category">Frukost</span>
+                                <h4 class="recipe-name">Äggröra med grönsaker</h4>
+                                <div class="recipe-macros">
+                                    <span>P: 28g</span>
+                                    <span>K: 45g</span>
+                                    <span>F: 18g</span>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Training Screen -->
+            <section class="screen" id="screen-training" data-screen="training">
+                <div class="screen-scroll">
+                    <div class="hero-card training-hero">
+                        <div class="hero-card-content">
+                            <span class="hero-label">Aktiv Plan</span>
+                            <h2 class="hero-title">Träningsplan 3</h2>
+                            <p class="hero-subtitle">Gym - 4 pass per vecka</p>
+                        </div>
+                        <div class="hero-card-decoration training"></div>
+                    </div>
+
+                    <div class="section-header">
+                        <h3 class="section-title">Välj Träningsplan</h3>
+                    </div>
+
+                    <div class="plan-selector">
+                        <button class="plan-option" data-plan="1">
+                            <div class="plan-option-content">
+                                <span class="plan-number">1</span>
+                                <div class="plan-info">
+                                    <span class="plan-name">Hemmaträning</span>
+                                    <span class="plan-desc">Minimal utrustning</span>
+                                </div>
+                            </div>
+                        </button>
+                        <button class="plan-option" data-plan="2">
+                            <div class="plan-option-content">
+                                <span class="plan-number">2</span>
+                                <div class="plan-info">
+                                    <span class="plan-name">Hemmaträning</span>
+                                    <span class="plan-desc">Variation</span>
+                                </div>
+                            </div>
+                        </button>
+                        <button class="plan-option active" data-plan="3">
+                            <div class="plan-option-content">
+                                <span class="plan-number">3</span>
+                                <div class="plan-info">
+                                    <span class="plan-name">Gymträning</span>
+                                    <span class="plan-desc">Dropsets</span>
+                                </div>
+                            </div>
+                            <span class="plan-active-badge">Aktiv</span>
+                        </button>
+                    </div>
+
+                    <div class="section-header">
+                        <h3 class="section-title">Veckans Pass</h3>
+                    </div>
+
+                    <div class="workout-list">
+                        <article class="workout-card" data-workout="pass1">
+                            <div class="workout-card-number">1</div>
+                            <div class="workout-card-content">
+                                <h4 class="workout-name">Överkropp Push</h4>
+                                <div class="workout-meta">
+                                    <span class="workout-exercises">6 övningar</span>
+                                    <span class="workout-duration">~45 min</span>
+                                </div>
+                                <div class="workout-tags">
+                                    <span class="workout-tag">Bröst</span>
+                                    <span class="workout-tag">Axlar</span>
+                                    <span class="workout-tag">Triceps</span>
+                                </div>
+                            </div>
+                            <div class="workout-card-status">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </div>
+                        </article>
+
+                        <article class="workout-card" data-workout="pass2">
+                            <div class="workout-card-number">2</div>
+                            <div class="workout-card-content">
+                                <h4 class="workout-name">Överkropp Pull</h4>
+                                <div class="workout-meta">
+                                    <span class="workout-exercises">6 övningar</span>
+                                    <span class="workout-duration">~45 min</span>
+                                </div>
+                                <div class="workout-tags">
+                                    <span class="workout-tag">Rygg</span>
+                                    <span class="workout-tag">Biceps</span>
+                                    <span class="workout-tag">Core</span>
+                                </div>
+                            </div>
+                            <div class="workout-card-status">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </div>
+                        </article>
+
+                        <article class="workout-card" data-workout="pass3">
+                            <div class="workout-card-number">3</div>
+                            <div class="workout-card-content">
+                                <h4 class="workout-name">Ben - Quad fokus</h4>
+                                <div class="workout-meta">
+                                    <span class="workout-exercises">5 övningar</span>
+                                    <span class="workout-duration">~50 min</span>
+                                </div>
+                                <div class="workout-tags">
+                                    <span class="workout-tag">Quads</span>
+                                    <span class="workout-tag">Glutes</span>
+                                    <span class="workout-tag dropset">Dropset</span>
+                                </div>
+                            </div>
+                            <div class="workout-card-status">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </div>
+                        </article>
+
+                        <article class="workout-card" data-workout="pass4">
+                            <div class="workout-card-number">4</div>
+                            <div class="workout-card-content">
+                                <h4 class="workout-name">Ben - Hamstring fokus</h4>
+                                <div class="workout-meta">
+                                    <span class="workout-exercises">5 övningar</span>
+                                    <span class="workout-duration">~50 min</span>
+                                </div>
+                                <div class="workout-tags">
+                                    <span class="workout-tag">Hamstrings</span>
+                                    <span class="workout-tag">Glutes</span>
+                                    <span class="workout-tag dropset">Dropset</span>
+                                </div>
+                            </div>
+                            <div class="workout-card-status">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </div>
+                        </article>
+                    </div>
+
+                    <div class="section-header">
+                        <h3 class="section-title">Extrapass</h3>
+                    </div>
+
+                    <div class="extra-workouts">
+                        <article class="extra-workout-card" data-workout="helkropp">
+                            <div class="extra-workout-icon">
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M6.5 6.5m-3.5 0a3.5 3.5 0 1 0 7 0a3.5 3.5 0 1 0 -7 0"></path>
+                                    <path d="M2.5 21.5h5l1.5 -7l4 4l4 -4l1.5 7h5"></path>
+                                    <path d="M10 11l1.5 7"></path>
+                                    <path d="M14 11l-1.5 7"></path>
+                                    <path d="M6 11v-2"></path>
+                                    <path d="M18 11v-2"></path>
+                                </svg>
+                            </div>
+                            <div class="extra-workout-content">
+                                <h4 class="extra-workout-name">Helkropp</h4>
+                                <span class="extra-workout-location">Gym</span>
+                            </div>
+                        </article>
+
+                        <article class="extra-workout-card" data-workout="gummiband">
+                            <div class="extra-workout-icon">
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <ellipse cx="12" cy="6" rx="8" ry="3"></ellipse>
+                                    <path d="M4 6v6a8 3 0 0 0 16 0V6"></path>
+                                    <path d="M4 12v6a8 3 0 0 0 16 0v-6"></path>
+                                </svg>
+                            </div>
+                            <div class="extra-workout-content">
+                                <h4 class="extra-workout-name">Gummiband</h4>
+                                <span class="extra-workout-location">Hemma</span>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Active Workout Screen -->
+            <section class="screen" id="screen-workout" data-screen="workout">
+                <div class="screen-scroll">
+                    <div class="workout-start-card">
+                        <div class="workout-start-content">
+                            <div class="workout-start-icon">
+                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                </svg>
+                            </div>
+                            <h2 class="workout-start-title">Starta Träningspass</h2>
+                            <p class="workout-start-desc">Välj ett pass från träningsplanen eller starta ett fritt pass
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="quick-start-section">
+                        <h3 class="section-title">Snabbstart</h3>
+
+                        <div class="quick-start-grid">
+                            <button class="quick-start-btn" data-action="last-workout">
+                                <div class="quick-start-icon">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="1 4 1 10 7 10"></polyline>
+                                        <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                                    </svg>
+                                </div>
+                                <span class="quick-start-label">Senaste Pass</span>
+                                <span class="quick-start-sub">Ben - Quad fokus</span>
+                            </button>
+
+                            <button class="quick-start-btn" data-action="next-workout">
+                                <div class="quick-start-icon">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                        <polyline points="12 5 19 12 12 19"></polyline>
+                                    </svg>
+                                </div>
+                                <span class="quick-start-label">Nästa Pass</span>
+                                <span class="quick-start-sub">Ben - Hamstring fokus</span>
+                            </button>
+
+                            <button class="quick-start-btn" data-action="free-workout">
+                                <div class="quick-start-icon">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    </svg>
+                                </div>
+                                <span class="quick-start-label">Fritt Pass</span>
+                                <span class="quick-start-sub">Skapa eget</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="rest-info-section">
+                        <h3 class="section-title">Vilotider</h3>
+                        <div class="rest-info-grid">
+                            <div class="rest-info-item">
+                                <span class="rest-reps">4-6 reps</span>
+                                <span class="rest-time">1-2 min vila</span>
+                            </div>
+                            <div class="rest-info-item">
+                                <span class="rest-reps">6-10 reps</span>
+                                <span class="rest-time">1 min vila</span>
+                            </div>
+                            <div class="rest-info-item">
+                                <span class="rest-reps">10-15 reps</span>
+                                <span class="rest-time">45-60 sek vila</span>
+                            </div>
+                            <div class="rest-info-item">
+                                <span class="rest-reps">15-20 reps</span>
+                                <span class="rest-time">30 sek vila</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="warmup-section">
+                        <h3 class="section-title">Uppvärmning</h3>
+                        <p class="warmup-intro">Välj en av dessa innan ditt pass:</p>
+                        <div class="warmup-options">
+                            <div class="warmup-option">
+                                <span class="warmup-name">Roddmaskin</span>
+                                <span class="warmup-value">2 km minst</span>
+                            </div>
+                            <div class="warmup-option">
+                                <span class="warmup-name">Crosstrainer</span>
+                                <span class="warmup-value">10 min</span>
+                            </div>
+                            <div class="warmup-option">
+                                <span class="warmup-name">Gång/Jogg</span>
+                                <span class="warmup-value">2-4 km</span>
+                            </div>
+                            <div class="warmup-option">
+                                <span class="warmup-name">Stairmaster</span>
+                                <span class="warmup-value">10 min</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Calendar Screen -->
+            <section class="screen" id="screen-calendar" data-screen="calendar">
+                <div class="screen-scroll">
+                    <div class="calendar-header">
+                        <button class="calendar-nav prev" aria-label="Föregående månad">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="15 18 9 12 15 6"></polyline>
+                            </svg>
+                        </button>
+                        <h2 class="calendar-month" id="calendar-month">Januari 2026</h2>
+                        <button class="calendar-nav next" aria-label="Nästa månad">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="calendar-weekdays">
+                        <span>Mån</span>
+                        <span>Tis</span>
+                        <span>Ons</span>
+                        <span>Tor</span>
+                        <span>Fre</span>
+                        <span>Lör</span>
+                        <span>Sön</span>
+                    </div>
+
+                    <div class="calendar-grid" id="calendar-grid">
+                        <!-- Calendar days will be generated by JavaScript -->
+                    </div>
+
+                    <div class="calendar-legend">
+                        <div class="legend-item">
+                            <span class="legend-dot workout"></span>
+                            <span class="legend-label">Träning</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-dot nutrition"></span>
+                            <span class="legend-label">Kost loggad</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-dot both"></span>
+                            <span class="legend-label">Båda</span>
+                        </div>
+                    </div>
+
+                    <div class="section-header">
+                        <h3 class="section-title">Statistik</h3>
+                        <span class="section-period" id="stats-period">Januari</span>
+                    </div>
+
+                    <div class="stats-grid" id="stats-grid">
+                        <div class="stat-card" id="stat-workouts">
+                            <span class="stat-value">0</span>
+                            <span class="stat-label">Träningspass</span>
+                            <div class="stat-trend"></div>
+                        </div>
+
+                        <div class="stat-card" id="stat-hours">
+                            <span class="stat-value">0</span>
+                            <span class="stat-label">Timmar totalt</span>
+                            <div class="stat-trend"></div>
+                        </div>
+
+                        <div class="stat-card" id="stat-streak">
+                            <span class="stat-value">0</span>
+                            <span class="stat-label">Dagars streak</span>
+                            <div class="stat-icon streak">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                    <path
+                                        d="M12 2L9.2 8.6L2 9.2L7.5 14L5.8 21L12 17.3L18.2 21L16.5 14L22 9.2L14.8 8.6L12 2Z" />
+                                </svg>
+                            </div>
+                        </div>
+
+                        <div class="stat-card" id="stat-average">
+                            <span class="stat-value">0</span>
+                            <span class="stat-label">Minuter snitt</span>
+                            <div class="stat-sublabel">per pass</div>
+                        </div>
+                    </div>
+
+                    <div class="section-header">
+                        <h3 class="section-title">Senaste Aktivitet</h3>
+                    </div>
+
+                    <div class="activity-list" id="activity-list">
+                        <!-- Activity items will be dynamically generated -->
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <nav class="bottom-nav">
+            <button class="nav-item active" data-screen="recipes" aria-label="Recept">
+                <div class="nav-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path>
+                        <path d="M7 2v20"></path>
+                        <path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"></path>
+                    </svg>
+                </div>
+                <span class="nav-label">Recept</span>
+            </button>
+
+            <button class="nav-item" data-screen="training" aria-label="Träning">
+                <div class="nav-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 4v6a6 6 0 0 0 12 0V4"></path>
+                        <line x1="4" y1="4" x2="20" y2="4"></line>
+                        <line x1="12" y1="16" x2="12" y2="20"></line>
+                        <line x1="8" y1="20" x2="16" y2="20"></line>
+                    </svg>
+                </div>
+                <span class="nav-label">Träning</span>
+            </button>
+
+            <button class="nav-item" data-screen="workout" aria-label="Starta">
+                <div class="nav-icon primary">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                </div>
+                <span class="nav-label">Starta</span>
+            </button>
+
+            <button class="nav-item" data-screen="calendar" aria-label="Kalender">
+                <div class="nav-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                </div>
+                <span class="nav-label">Kalender</span>
+            </button>
+        </nav>
+
+        <!-- Settings Modal -->
+        <div class="modal-overlay" id="settings-modal">
+            <div class="modal-content settings-modal">
+                <div class="modal-header">
+                    <button class="modal-close" id="settings-close" aria-label="Stäng">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                    <h2 class="modal-title">Inställningar</h2>
+                </div>
+                <div class="modal-body settings-body">
+                    <!-- Theme Section -->
+                    <div class="settings-section">
+                        <h3 class="settings-section-title">Utseende</h3>
+                        <div class="settings-option">
+                            <span class="settings-option-label">Tema</span>
+                            <div class="theme-selector" id="theme-selector">
+                                <button class="theme-btn active" data-theme="auto">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <circle cx="12" cy="12" r="4"></circle>
+                                        <path
+                                            d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41">
+                                        </path>
+                                    </svg>
+                                    Auto
+                                </button>
+                                <button class="theme-btn" data-theme="light">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <circle cx="12" cy="12" r="5"></circle>
+                                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                                    </svg>
+                                    Ljust
+                                </button>
+                                <button class="theme-btn" data-theme="dark">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                                    </svg>
+                                    Mörkt
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Data Section -->
+                    <div class="settings-section">
+                        <h3 class="settings-section-title">Data</h3>
+                        <div class="settings-option clickable" id="export-data-btn">
+                            <div class="settings-option-info">
+                                <span class="settings-option-label">Exportera Data</span>
+                                <span class="settings-option-desc">Ladda ner träningshistorik som JSON</span>
+                            </div>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                        </div>
+                        <div class="settings-option clickable" id="import-data-btn">
+                            <div class="settings-option-info">
+                                <span class="settings-option-label">Importera Data</span>
+                                <span class="settings-option-desc">Återställ från backup-fil</span>
+                            </div>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="17 8 12 3 7 8"></polyline>
+                                <line x1="12" y1="3" x2="12" y2="15"></line>
+                            </svg>
+                        </div>
+                        <input type="file" id="import-file-input" accept=".json" style="display: none;">
+                        <div class="settings-option clickable danger" id="clear-data-btn">
+                            <div class="settings-option-info">
+                                <span class="settings-option-label">Rensa All Data</span>
+                                <span class="settings-option-desc">Ta bort all träningshistorik</span>
+                            </div>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <polyline points="3 6 5 6 21 6"></polyline>
+                                <path
+                                    d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                </path>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- About Section -->
+                    <div class="settings-section">
+                        <h3 class="settings-section-title">Om</h3>
+                        <div class="about-info">
+                            <div class="about-app">
+                                <div class="about-icon">
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
+                                        <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
+                                    </svg>
+                                </div>
+                                <div class="about-text">
+                                    <span class="about-name">Diana Fitness</span>
+                                    <span class="about-version">Version 1.0.0</span>
+                                </div>
+                            </div>
+                            <p class="about-desc">Din personliga tränings- och kostapp. Skapad med ❤️ för Diana.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>
