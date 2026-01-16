@@ -3370,6 +3370,7 @@ button,
     background: var(--color-surface);
     border-radius: var(--radius-xl);
     overflow: hidden;
+    flex-shrink: 0;
 }
 
 .wl-exercise-header {

@@ -1322,7 +1322,10 @@
         const modals = document.querySelectorAll('.modal-overlay');
         modals.forEach(modal => {
             modal.classList.remove('active');
-            setTimeout(() => modal.remove(), 300);
+            // Don't remove the static settings modal
+            if (modal.id !== 'settings-modal') {
+                setTimeout(() => modal.remove(), 300);
+            }
         });
         state.activeModal = null;
     }
@@ -1941,6 +1944,7 @@
             modal.classList.add('active');
             state.activeModal = 'settings';
             loadThemePreference();
+            loadViewPreference();
             triggerHaptic('light');
         }
     }
@@ -1962,6 +1966,44 @@
                 btn.classList.add('active');
             }
         });
+    }
+
+    function loadViewPreference() {
+        // Use the same key as WorkoutListView
+        const savedView = loadFromStorage('diana_workout_view_mode', 'list');
+        const viewBtns = document.querySelectorAll('#view-mode-selector .theme-btn');
+        viewBtns.forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.dataset.view === savedView) {
+                btn.classList.add('active');
+            }
+        });
+    }
+
+    function setViewMode(mode) {
+        // Save to storage using the same key as WorkoutListView
+        try {
+            localStorage.setItem('diana_workout_view_mode', mode);
+        } catch (e) {
+            console.warn('Failed to save view mode:', e);
+        }
+
+        // Update button states
+        const viewBtns = document.querySelectorAll('#view-mode-selector .theme-btn');
+        viewBtns.forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.dataset.view === mode) {
+                btn.classList.add('active');
+            }
+        });
+
+        // Also update the global object if available
+        if (typeof WorkoutListView !== 'undefined') {
+            WorkoutListView.setViewMode(mode);
+        }
+
+        triggerHaptic('light');
+        showToast(`Vy ändrad till ${mode === 'list' ? 'lista' : 'detaljerad'}`);
     }
 
     function setTheme(theme) {
@@ -2118,6 +2160,17 @@
                 const btn = e.target.closest('.theme-btn');
                 if (btn) {
                     setTheme(btn.dataset.theme);
+                }
+            });
+        }
+
+        // View mode selector
+        const viewSelector = document.getElementById('view-mode-selector');
+        if (viewSelector) {
+            viewSelector.addEventListener('click', (e) => {
+                const btn = e.target.closest('.theme-btn');
+                if (btn) {
+                    setViewMode(btn.dataset.view);
                 }
             });
         }
