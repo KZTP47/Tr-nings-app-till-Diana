@@ -9,21 +9,20 @@ const DYNAMIC_CACHE_NAME = 'diana-fitness-dynamic-v8';
 
 // Files to cache immediately on install
 const STATIC_ASSETS = [
-    '/',
-    '/index.html',
-    '/css/main.css',
-    '/js/data.js',
-    '/js/workout-list.js',
-    '/js/app.js',
-    '/manifest.json',
-    '/icons/icon-72x72.png',
-    '/icons/icon-96x96.png',
-    '/icons/icon-128x128.png',
-    '/icons/icon-144x144.png',
-    '/icons/icon-152x152.png',
-    '/icons/icon-192x192.png',
-    '/icons/icon-512x512.png',
-    '/icons/apple-touch-icon.png'
+    './',
+    './index.html',
+    './css/main.css',
+    './js/data.js',
+    './js/app.js',
+    './manifest.json',
+    './icons/icon-72x72.png',
+    './icons/icon-96x96.png',
+    './icons/icon-128x128.png',
+    './icons/icon-144x144.png',
+    './icons/icon-152x152.png',
+    './icons/icon-192x192.png',
+    './icons/icon-512x512.png',
+    './icons/apple-touch-icon.png'
 ];
 
 // External resources to cache
@@ -140,7 +139,7 @@ self.addEventListener('fetch', event => {
                 .catch(() => {
                     // If both cache and network fail, return offline page for HTML
                     if (request.headers.get('accept').includes('text/html')) {
-                        return caches.match('/index.html');
+                        return caches.match('./index.html');
                     }
                 })
         );
@@ -220,8 +219,8 @@ self.addEventListener('push', event => {
 
     const options = {
         body: event.data ? event.data.text() : 'Dags att träna!',
-        icon: '/icons/icon-192x192.png',
-        badge: '/icons/badge-72x72.png',
+        icon: './icons/icon-192x192.png',
+        badge: './icons/badge-72x72.png',
         vibrate: [100, 50, 100],
         data: {
             dateOfArrival: Date.now(),
@@ -244,11 +243,11 @@ self.addEventListener('notificationclick', event => {
 
     if (event.action === 'start') {
         event.waitUntil(
-            clients.openWindow('/?screen=workout')
+            clients.openWindow('./?screen=workout')
         );
     } else {
         event.waitUntil(
-            clients.openWindow('/')
+            clients.openWindow('./')
         );
     }
 });

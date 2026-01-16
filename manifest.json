@@ -3,13 +3,17 @@
     "short_name": "Diana Fitness",
     "description": "Din personliga tränings- och kostapp. Håll koll på recept, träningspass och framsteg.",
     "lang": "sv",
-    "start_url": "/",
-    "scope": "/",
+    "start_url": "./",
+    "scope": "./",
     "display": "standalone",
     "orientation": "portrait",
     "background_color": "#0D0D0F",
     "theme_color": "#E85D75",
-    "categories": ["fitness", "health", "lifestyle"],
+    "categories": [
+        "fitness",
+        "health",
+        "lifestyle"
+    ],
     "icons": [
         {
             "src": "icons/icon-72x72.png",
@@ -87,7 +91,7 @@
             "name": "Starta Pass",
             "short_name": "Starta",
             "description": "Starta ett nytt träningspass",
-            "url": "/?screen=workout",
+            "url": "./?screen=workout",
             "icons": [
                 {
                     "src": "icons/shortcut-workout.png",
@@ -100,7 +104,7 @@
             "name": "Dagens Recept",
             "short_name": "Recept",
             "description": "Se dagens recept",
-            "url": "/?screen=recipes",
+            "url": "./?screen=recipes",
             "icons": [
                 {
                     "src": "icons/shortcut-recipes.png",
