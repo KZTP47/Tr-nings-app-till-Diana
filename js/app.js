@@ -192,9 +192,59 @@
         modal.className = 'modal-overlay';
         modal.id = 'recipe-modal';
 
-        const ingredientsList = recipe.ingredients.map(ing =>
-            `<li><span class="ingredient-amount">${ing.amount}</span> ${ing.item}</li>`
-        ).join('');
+        // Helper function to parse and multiply ingredient amounts
+        function multiplyAmount(amountStr, multiplier) {
+            if (multiplier === 1) return amountStr;
+
+            // Handle ranges like "1-2"
+            if (amountStr.includes('-')) {
+                const parts = amountStr.split('-');
+                const part1 = parseFloat(parts[0].replace(',', '.'));
+                const part2 = parseFloat(parts[1].replace(',', '.'));
+                if (!isNaN(part1) && !isNaN(part2)) {
+                    const newPart1 = formatNumber(part1 * multiplier);
+                    const newPart2 = formatNumber(part2 * multiplier);
+                    return `${newPart1}-${newPart2}`;
+                }
+            }
+
+            // Handle fractions like "1/2" or "½"
+            const fractionMap = { '½': 0.5, '¼': 0.25, '¾': 0.75, '⅓': 0.333, '⅔': 0.667 };
+            for (const [frac, val] of Object.entries(fractionMap)) {
+                if (amountStr.includes(frac)) {
+                    const numPart = amountStr.replace(frac, '').trim();
+                    const baseNum = numPart ? parseFloat(numPart.replace(',', '.')) : 0;
+                    const total = (baseNum + val) * multiplier;
+                    return formatNumber(total);
+                }
+            }
+
+            // Handle simple numbers with possible units
+            const match = amountStr.match(/^([\d,\.]+)\s*(.*)$/);
+            if (match) {
+                const num = parseFloat(match[1].replace(',', '.'));
+                const unit = match[2];
+                if (!isNaN(num)) {
+                    return formatNumber(num * multiplier) + (unit ? ' ' + unit : '');
+                }
+            }
+
+            return amountStr;
+        }
+
+        function formatNumber(num) {
+            // Format nicely - use integers when possible, otherwise one decimal
+            if (Number.isInteger(num)) return num.toString();
+            const rounded = Math.round(num * 10) / 10;
+            return rounded.toString().replace('.', ',');
+        }
+
+        function renderIngredients(portions) {
+            return recipe.ingredients.map(ing => {
+                const adjustedAmount = multiplyAmount(ing.amount, portions);
+                return `<li><span class="ingredient-amount">${adjustedAmount}</span> ${ing.item}</li>`;
+            }).join('');
+        }
 
         const instructionsList = recipe.instructions.map((inst, idx) =>
             `<li><span class="step-number">${idx + 1}</span><span class="step-text">${inst}</span></li>`
@@ -234,11 +284,29 @@
                             <span class="macro-badge-label">Fett</span>
                         </div>
                     </div>
+                    <p class="macro-note">Näringsvärden visas per portion</p>
 
                     <section class="modal-section">
-                        <h3 class="modal-section-title">Ingredienser</h3>
-                        <ul class="ingredients-list">
-                            ${ingredientsList}
+                        <div class="ingredients-header">
+                            <h3 class="modal-section-title">Ingredienser</h3>
+                            <div class="portion-selector">
+                                <button class="portion-btn minus" aria-label="Minska portioner">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    </svg>
+                                </button>
+                                <span class="portion-count" id="portion-count">1</span>
+                                <span class="portion-label">portion</span>
+                                <button class="portion-btn plus" aria-label="Öka portioner">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <ul class="ingredients-list" id="ingredients-list">
+                            ${renderIngredients(1)}
                         </ul>
                     </section>
 
@@ -261,6 +329,28 @@
 
         document.body.appendChild(modal);
         state.activeModal = modal;
+
+        // Portion selector logic
+        let currentPortions = 1;
+        const portionCountEl = modal.querySelector('#portion-count');
+        const portionLabelEl = modal.querySelector('.portion-label');
+        const ingredientsListEl = modal.querySelector('#ingredients-list');
+        const minusBtn = modal.querySelector('.portion-btn.minus');
+        const plusBtn = modal.querySelector('.portion-btn.plus');
+
+        function updatePortions(newValue) {
+            currentPortions = Math.max(1, Math.min(10, newValue));
+            portionCountEl.textContent = currentPortions;
+            portionLabelEl.textContent = currentPortions === 1 ? 'portion' : 'portioner';
+            ingredientsListEl.innerHTML = renderIngredients(currentPortions);
+            minusBtn.disabled = currentPortions <= 1;
+            plusBtn.disabled = currentPortions >= 10;
+            triggerHaptic('light');
+        }
+
+        minusBtn.addEventListener('click', () => updatePortions(currentPortions - 1));
+        plusBtn.addEventListener('click', () => updatePortions(currentPortions + 1));
+        updatePortions(1); // Initialize state
 
         requestAnimationFrame(() => {
             modal.classList.add('active');

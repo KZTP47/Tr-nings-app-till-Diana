@@ -3,9 +3,9 @@
  * Handles caching for offline functionality
  */
 
-const CACHE_NAME = 'diana-fitness-v5';
-const STATIC_CACHE_NAME = 'diana-fitness-static-v5';
-const DYNAMIC_CACHE_NAME = 'diana-fitness-dynamic-v5';
+const CACHE_NAME = 'diana-fitness-v6';
+const STATIC_CACHE_NAME = 'diana-fitness-static-v6';
+const DYNAMIC_CACHE_NAME = 'diana-fitness-dynamic-v6';
 
 // Files to cache immediately on install
 const STATIC_ASSETS = [
@@ -15,6 +15,11 @@ const STATIC_ASSETS = [
     '/js/data.js',
     '/js/app.js',
     '/manifest.json',
+    '/icons/icon-72x72.png',
+    '/icons/icon-96x96.png',
+    '/icons/icon-128x128.png',
+    '/icons/icon-144x144.png',
+    '/icons/icon-152x152.png',
     '/icons/icon-192x192.png',
     '/icons/icon-512x512.png',
     '/icons/apple-touch-icon.png'

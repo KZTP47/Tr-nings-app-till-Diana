@@ -1677,6 +1677,77 @@ button,
     margin-bottom: var(--spacing-md);
 }
 
+/* Macro Note */
+.macro-note {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-tertiary);
+    text-align: center;
+    margin-top: calc(-1 * var(--spacing-sm));
+    margin-bottom: var(--spacing-lg);
+}
+
+/* Ingredients Header with Portion Selector */
+.ingredients-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-md);
+}
+
+.ingredients-header .modal-section-title {
+    margin-bottom: 0;
+}
+
+.portion-selector {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    background: var(--color-surface);
+    border-radius: var(--radius-full);
+    padding: 4px 8px;
+}
+
+.portion-btn {
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    border-radius: var(--radius-full);
+    background: var(--color-primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background var(--transition-fast), opacity var(--transition-fast), transform var(--transition-fast);
+}
+
+.portion-btn:active {
+    transform: scale(0.95);
+}
+
+.portion-btn:disabled {
+    background: var(--color-text-tertiary);
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.portion-btn:disabled:active {
+    transform: none;
+}
+
+.portion-count {
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    color: var(--color-text-primary);
+    min-width: 20px;
+    text-align: center;
+}
+
+.portion-label {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    margin-right: var(--spacing-xs);
+}
+
 /* Ingredients List */
 .ingredients-list {
     list-style: none;
