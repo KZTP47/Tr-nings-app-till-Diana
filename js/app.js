@@ -22,7 +22,9 @@
         nutritionHistory: [],
         activeModal: null,
         activeWorkout: null,
-        restTimer: null
+        restTimer: null,
+        shoppingList: [],      // Combined ingredients list
+        shoppingRecipes: []    // Recipes added to shopping list with portions
     };
 
     // ============================================
@@ -47,7 +49,15 @@
         headerActionBtn: document.getElementById('header-action-btn'),
         sectionActions: document.querySelectorAll('.section-action'),
         trainingHero: document.querySelector('.training-hero .hero-title'),
-        trainingHeroSubtitle: document.querySelector('.training-hero .hero-subtitle')
+        trainingHeroSubtitle: document.querySelector('.training-hero .hero-subtitle'),
+        // Shopping list elements
+        shoppingEmpty: document.getElementById('shopping-empty'),
+        shoppingContent: document.getElementById('shopping-content'),
+        shoppingRecipes: document.getElementById('shopping-recipes'),
+        shoppingList: document.getElementById('shopping-list'),
+        shoppingCount: document.getElementById('shopping-count'),
+        shoppingClearBtn: document.getElementById('shopping-clear-btn'),
+        shoppingBadge: document.getElementById('shopping-badge')
     };
 
     // ============================================
@@ -58,7 +68,8 @@
         recipes: 'Recept',
         training: 'Träning',
         workout: 'Starta Pass',
-        calendar: 'Kalender'
+        calendar: 'Kalender',
+        shopping: 'Inköpslista'
     };
 
     // ============================================
@@ -104,6 +115,11 @@
         });
 
         elements.pageTitle.textContent = screenTitles[screenName] || screenName;
+
+        // Render screen-specific content
+        if (screenName === 'shopping') {
+            renderShoppingScreen();
+        }
 
         triggerHaptic('light');
         saveToStorage('currentScreen', screenName);
@@ -196,8 +212,49 @@
         function multiplyAmount(amountStr, multiplier) {
             if (multiplier === 1) return amountStr;
 
-            // Handle ranges like "1-2"
-            if (amountStr.includes('-')) {
+            // Helper to multiply a single number string
+            function multiplyNumber(numStr) {
+                const num = parseFloat(numStr.replace(',', '.'));
+                if (isNaN(num)) return numStr;
+                return formatNumber(num * multiplier);
+            }
+
+            // Helper to handle Swedish singular/plural
+            function pluralize(num, word) {
+                const singularToPlural = {
+                    'skiva': 'skivor',
+                    'st': 'st',
+                    'st.': 'st.',
+                    'msk': 'msk',
+                    'tsk': 'tsk',
+                    'dl': 'dl',
+                    'krm': 'krm'
+                };
+                const pluralToSingular = {
+                    'skivor': 'skiva'
+                };
+
+                const numVal = parseFloat(num);
+                if (numVal === 1 && pluralToSingular[word]) {
+                    return pluralToSingular[word];
+                } else if (numVal !== 1 && singularToPlural[word]) {
+                    return singularToPlural[word];
+                }
+                return word;
+            }
+
+            // Handle amounts with parentheses like "375 g (2 skivor)"
+            const parenMatch = amountStr.match(/^([\d,\.]+)\s*([a-zA-Z]*)\s*\((\d+)\s*([^)]+)\)$/);
+            if (parenMatch) {
+                const mainNum = multiplyNumber(parenMatch[1]);
+                const mainUnit = parenMatch[2];
+                const parenNum = multiplyNumber(parenMatch[3]);
+                const parenUnit = pluralize(parenNum, parenMatch[4].trim());
+                return `${mainNum} ${mainUnit} (${parenNum} ${parenUnit})`.replace(/\s+/g, ' ').trim();
+            }
+
+            // Handle ranges like "500-20" (though this seems like data issue, handle it)
+            if (amountStr.includes('-') && !amountStr.includes('(')) {
                 const parts = amountStr.split('-');
                 const part1 = parseFloat(parts[0].replace(',', '.'));
                 const part2 = parseFloat(parts[1].replace(',', '.'));
@@ -219,7 +276,7 @@
                 }
             }
 
-            // Handle simple numbers with possible units
+            // Handle simple numbers with possible units like "250 g"
             const match = amountStr.match(/^([\d,\.]+)\s*(.*)$/);
             if (match) {
                 const num = parseFloat(match[1].replace(',', '.'));
@@ -324,6 +381,16 @@
                     </section>
                     ` : ''}
                 </div>
+                <div class="modal-footer">
+                    <button class="add-to-shopping-btn" id="add-to-shopping-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                        Lägg till i inköpslista
+                    </button>
+                </div>
             </div>
         `;
 
@@ -351,6 +418,11 @@
         minusBtn.addEventListener('click', () => updatePortions(currentPortions - 1));
         plusBtn.addEventListener('click', () => updatePortions(currentPortions + 1));
         updatePortions(1); // Initialize state
+
+        // Add to shopping list button
+        modal.querySelector('#add-to-shopping-btn').addEventListener('click', () => {
+            handleAddToShoppingList(recipe, currentPortions);
+        });
 
         requestAnimationFrame(() => {
             modal.classList.add('active');
@@ -607,6 +679,39 @@
     // ============================================
 
     function startActiveWorkout(pass, passKey) {
+        // Check if WorkoutListView module is available and list mode is selected
+        if (typeof WorkoutListView !== 'undefined' && WorkoutListView.getViewMode() === 'list') {
+            WorkoutListView.startListWorkout(pass, passKey, {
+                onComplete: (summary) => {
+                    // Save workout to history
+                    const workout = {
+                        date: summary.date,
+                        passKey: summary.passKey,
+                        passName: summary.passName,
+                        duration: summary.duration,
+                        completedSets: summary.completedSets,
+                        totalSets: summary.totalSets
+                    };
+                    state.workoutHistory.push(workout);
+                    saveToStorage('workoutHistory', state.workoutHistory);
+                    updateCalendarStats();
+                },
+                onClose: (switchToDetailed) => {
+                    // If user switched to detailed view, restart with detailed
+                    if (switchToDetailed && pass && passKey) {
+                        startDetailedWorkout(pass, passKey);
+                    }
+                }
+            });
+            triggerHaptic('medium');
+            return;
+        }
+
+        // Use original detailed workout view
+        startDetailedWorkout(pass, passKey);
+    }
+
+    function startDetailedWorkout(pass, passKey) {
         const flattenedExercises = flattenExercises(pass.exercises);
 
         state.activeWorkout = {
@@ -2050,6 +2155,418 @@
     }
 
     // ============================================
+    // Shopping List Functions
+    // ============================================
+
+    function handleAddToShoppingList(recipe, portions) {
+        // Check if recipe already exists in shopping list
+        const existingRecipe = state.shoppingRecipes.find(r => r.id === recipe.id);
+
+        if (existingRecipe) {
+            // Show confirmation modal
+            showConfirmModal(
+                'Receptet finns redan',
+                `"${recipe.name}" finns redan i din inköpslista med ${existingRecipe.portions} ${existingRecipe.portions === 1 ? 'portion' : 'portioner'}. Vad vill du göra?`,
+                [
+                    {
+                        text: 'Ersätt',
+                        type: 'primary',
+                        action: () => {
+                            existingRecipe.portions = portions;
+                            rebuildShoppingList();
+                            saveShoppingList();
+                            closeAllModals();
+                            showToast(`Uppdaterade till ${portions} ${portions === 1 ? 'portion' : 'portioner'}`);
+                        }
+                    },
+                    {
+                        text: 'Lägg till fler',
+                        type: 'secondary',
+                        action: () => {
+                            addRecipeToShoppingList(recipe, portions);
+                            closeAllModals();
+                            showToast('Tillagd i inköpslistan');
+                        }
+                    },
+                    {
+                        text: 'Avbryt',
+                        type: 'tertiary',
+                        action: () => { }
+                    }
+                ]
+            );
+        } else {
+            addRecipeToShoppingList(recipe, portions);
+            closeAllModals();
+            showToast('Tillagd i inköpslistan');
+        }
+    }
+
+    function addRecipeToShoppingList(recipe, portions) {
+        state.shoppingRecipes.push({
+            id: recipe.id,
+            name: recipe.name,
+            portions: portions,
+            ingredients: recipe.ingredients.map(ing => ({ ...ing })),
+            category: recipe.category
+        });
+        rebuildShoppingList();
+        saveShoppingList();
+        triggerHaptic('medium');
+    }
+
+    function removeRecipeFromShoppingList(recipeId) {
+        state.shoppingRecipes = state.shoppingRecipes.filter(r => r.id !== recipeId);
+        rebuildShoppingList();
+        saveShoppingList();
+        renderShoppingScreen();
+        triggerHaptic('light');
+    }
+
+    function rebuildShoppingList() {
+        // Combine all ingredients from all recipes
+        const combinedIngredients = {};
+
+        state.shoppingRecipes.forEach(recipe => {
+            recipe.ingredients.forEach(ing => {
+                const parsed = parseIngredientForShopping(ing.amount, recipe.portions);
+                const key = normalizeIngredientName(ing.item);
+
+                if (combinedIngredients[key]) {
+                    // Try to combine amounts
+                    if (parsed.unit === combinedIngredients[key].unit ||
+                        (parsed.unit === '' && combinedIngredients[key].unit === '') ||
+                        parsed.amount === 0) {
+                        combinedIngredients[key].amount += parsed.amount;
+                        combinedIngredients[key].sources.push({
+                            recipeName: recipe.name,
+                            portions: recipe.portions,
+                            originalAmount: ing.amount
+                        });
+                    } else {
+                        // Different units, add as separate entry
+                        const altKey = key + '_' + parsed.unit;
+                        if (combinedIngredients[altKey]) {
+                            combinedIngredients[altKey].amount += parsed.amount;
+                            combinedIngredients[altKey].sources.push({
+                                recipeName: recipe.name,
+                                portions: recipe.portions,
+                                originalAmount: ing.amount
+                            });
+                        } else {
+                            combinedIngredients[altKey] = {
+                                item: ing.item,
+                                amount: parsed.amount,
+                                unit: parsed.unit,
+                                checked: false,
+                                sources: [{
+                                    recipeName: recipe.name,
+                                    portions: recipe.portions,
+                                    originalAmount: ing.amount
+                                }]
+                            };
+                        }
+                    }
+                } else {
+                    combinedIngredients[key] = {
+                        item: ing.item,
+                        amount: parsed.amount,
+                        unit: parsed.unit,
+                        checked: false,
+                        sources: [{
+                            recipeName: recipe.name,
+                            portions: recipe.portions,
+                            originalAmount: ing.amount
+                        }]
+                    };
+                }
+            });
+        });
+
+        // Preserve checked state from previous list
+        const previousChecked = {};
+        state.shoppingList.forEach(item => {
+            previousChecked[item.item] = item.checked;
+        });
+
+        // Convert to array and restore checked state
+        state.shoppingList = Object.values(combinedIngredients).map(item => ({
+            ...item,
+            id: generateId(),
+            checked: previousChecked[item.item] || false
+        }));
+
+        updateShoppingBadge();
+    }
+
+    function normalizeIngredientName(name) {
+        return name.toLowerCase().trim();
+    }
+
+    function parseIngredientForShopping(amountStr, multiplier) {
+        // Extract number and unit from amount string
+        let amount = 0;
+        let unit = '';
+
+        // Handle parenthetical amounts like "375 g (2 skivor)"
+        const parenMatch = amountStr.match(/^([\d,\.]+)\s*([a-zA-Z]*)/);
+        if (parenMatch) {
+            amount = parseFloat(parenMatch[1].replace(',', '.')) || 0;
+            unit = parenMatch[2].trim();
+        } else {
+            // Try simple number
+            const numMatch = amountStr.match(/([\d,\.]+)/);
+            if (numMatch) {
+                amount = parseFloat(numMatch[1].replace(',', '.')) || 0;
+            }
+            // Extract unit
+            const unitMatch = amountStr.match(/[\d,\.]+\s*([a-zA-Z]+)/);
+            if (unitMatch) {
+                unit = unitMatch[1];
+            }
+        }
+
+        return {
+            amount: amount * multiplier,
+            unit: unit
+        };
+    }
+
+    function formatShoppingAmount(amount, unit) {
+        if (amount === 0) return '';
+
+        // Format the number nicely
+        let formattedAmount;
+        if (Number.isInteger(amount)) {
+            formattedAmount = amount.toString();
+        } else {
+            formattedAmount = (Math.round(amount * 10) / 10).toString().replace('.', ',');
+        }
+
+        return unit ? `${formattedAmount} ${unit}` : formattedAmount;
+    }
+
+    function renderShoppingScreen() {
+        if (!elements.shoppingEmpty || !elements.shoppingContent) return;
+
+        if (state.shoppingRecipes.length === 0) {
+            elements.shoppingEmpty.style.display = 'flex';
+            elements.shoppingContent.style.display = 'none';
+            return;
+        }
+
+        elements.shoppingEmpty.style.display = 'none';
+        elements.shoppingContent.style.display = 'block';
+
+        // Render recipe chips
+        if (elements.shoppingRecipes) {
+            elements.shoppingRecipes.innerHTML = state.shoppingRecipes.map(recipe => `
+                <div class="recipe-chip" data-recipe-id="${recipe.id}">
+                    <span class="recipe-chip-portion">${recipe.portions}x</span>
+                    <span class="recipe-chip-name">${recipe.name}</span>
+                    <button class="recipe-chip-remove" aria-label="Ta bort ${recipe.name}">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+            `).join('');
+
+            // Add remove listeners
+            elements.shoppingRecipes.querySelectorAll('.recipe-chip-remove').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const chip = e.target.closest('.recipe-chip');
+                    if (chip) {
+                        removeRecipeFromShoppingList(chip.dataset.recipeId);
+                    }
+                });
+            });
+        }
+
+        // Update count
+        const uncheckedCount = state.shoppingList.filter(i => !i.checked).length;
+        if (elements.shoppingCount) {
+            elements.shoppingCount.textContent = `${uncheckedCount} ${uncheckedCount === 1 ? 'vara' : 'varor'} kvar`;
+        }
+
+        // Render shopping items (unchecked first, then checked)
+        const sortedItems = [...state.shoppingList].sort((a, b) => {
+            if (a.checked === b.checked) return 0;
+            return a.checked ? 1 : -1;
+        });
+
+        if (elements.shoppingList) {
+            elements.shoppingList.innerHTML = sortedItems.map(item => `
+                <div class="shopping-item ${item.checked ? 'checked' : ''}" data-item-id="${item.id}">
+                    <button class="shopping-checkbox" aria-label="Markera som ${item.checked ? 'ej köpt' : 'köpt'}">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                    </button>
+                    <div class="shopping-item-content">
+                        <span class="shopping-item-text">
+                            <span class="shopping-item-amount">${formatShoppingAmount(item.amount, item.unit)}</span>
+                            ${item.item}
+                        </span>
+                        ${item.sources.length > 1 ? `
+                            <div class="shopping-item-sources">${item.sources.map(s => s.recipeName).join(', ')}</div>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('');
+
+            // Add toggle listeners
+            elements.shoppingList.querySelectorAll('.shopping-item').forEach(itemEl => {
+                itemEl.addEventListener('click', () => {
+                    toggleShoppingItem(itemEl.dataset.itemId);
+                });
+            });
+        }
+    }
+
+    function toggleShoppingItem(itemId) {
+        const item = state.shoppingList.find(i => i.id === itemId);
+        if (item) {
+            item.checked = !item.checked;
+            saveShoppingList();
+            renderShoppingScreen();
+            triggerHaptic('light');
+        }
+    }
+
+    function clearShoppingList() {
+        showConfirmModal(
+            'Rensa inköpslistan?',
+            'Är du säker på att du vill ta bort alla varor och recept från inköpslistan?',
+            [
+                {
+                    text: 'Rensa',
+                    type: 'primary',
+                    action: () => {
+                        state.shoppingRecipes = [];
+                        state.shoppingList = [];
+                        saveShoppingList();
+                        renderShoppingScreen();
+                        triggerHaptic('medium');
+                    }
+                },
+                {
+                    text: 'Avbryt',
+                    type: 'tertiary',
+                    action: () => { }
+                }
+            ]
+        );
+    }
+
+    function saveShoppingList() {
+        saveToStorage('shoppingRecipes', state.shoppingRecipes);
+        saveToStorage('shoppingList', state.shoppingList);
+        updateShoppingBadge();
+    }
+
+    function loadShoppingList() {
+        state.shoppingRecipes = loadFromStorage('shoppingRecipes', []);
+        state.shoppingList = loadFromStorage('shoppingList', []);
+        updateShoppingBadge();
+    }
+
+    function updateShoppingBadge() {
+        if (!elements.shoppingBadge) return;
+
+        const count = state.shoppingList.filter(i => !i.checked).length;
+        if (count > 0) {
+            elements.shoppingBadge.textContent = count > 99 ? '99+' : count;
+            elements.shoppingBadge.style.display = 'flex';
+        } else {
+            elements.shoppingBadge.style.display = 'none';
+        }
+    }
+
+    function generateId() {
+        return Date.now().toString(36) + Math.random().toString(36).substr(2);
+    }
+
+    // Toast notification
+    function showToast(message) {
+        // Remove existing toast
+        const existingToast = document.querySelector('.toast');
+        if (existingToast) existingToast.remove();
+
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.innerHTML = `
+            <svg class="toast-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            <span>${message}</span>
+        `;
+        document.body.appendChild(toast);
+
+        requestAnimationFrame(() => {
+            toast.classList.add('active');
+        });
+
+        setTimeout(() => {
+            toast.classList.remove('active');
+            setTimeout(() => toast.remove(), 300);
+        }, 2500);
+    }
+
+    // Confirmation modal
+    function showConfirmModal(title, text, buttons) {
+        const modal = document.createElement('div');
+        modal.className = 'confirm-modal-overlay';
+        modal.innerHTML = `
+            <div class="confirm-modal">
+                <h3 class="confirm-modal-title">${title}</h3>
+                <p class="confirm-modal-text">${text}</p>
+                <div class="confirm-modal-buttons">
+                    ${buttons.map((btn, idx) => `
+                        <button class="confirm-modal-btn ${btn.type}" data-btn-idx="${idx}">${btn.text}</button>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(modal);
+
+        requestAnimationFrame(() => {
+            modal.classList.add('active');
+        });
+
+        modal.querySelectorAll('.confirm-modal-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const idx = parseInt(btn.dataset.btnIdx);
+                modal.classList.remove('active');
+                setTimeout(() => {
+                    modal.remove();
+                    if (buttons[idx] && buttons[idx].action) {
+                        buttons[idx].action();
+                    }
+                }, 200);
+            });
+        });
+
+        // Close on backdrop click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+                setTimeout(() => modal.remove(), 200);
+            }
+        });
+    }
+
+    function initShoppingListEvents() {
+        // Clear button
+        if (elements.shoppingClearBtn) {
+            elements.shoppingClearBtn.addEventListener('click', clearShoppingList);
+        }
+    }
+
+    // ============================================
     // Initialize App
     // ============================================
 
@@ -2059,14 +2576,17 @@
         registerServiceWorker();
         applySavedTheme();
         loadSavedState();
+        loadShoppingList();
 
         renderMealCards();
         renderRecipeGrid();
         updateTrainingHero();
         renderWorkoutList();
+        renderShoppingScreen();
 
         initEventListeners();
         initSettingsEvents();
+        initShoppingListEvents();
         generateCalendar();
 
         if (isStandalone()) {

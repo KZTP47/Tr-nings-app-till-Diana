@@ -3,9 +3,9 @@
  * Handles caching for offline functionality
  */
 
-const CACHE_NAME = 'diana-fitness-v6';
-const STATIC_CACHE_NAME = 'diana-fitness-static-v6';
-const DYNAMIC_CACHE_NAME = 'diana-fitness-dynamic-v6';
+const CACHE_NAME = 'diana-fitness-v8';
+const STATIC_CACHE_NAME = 'diana-fitness-static-v8';
+const DYNAMIC_CACHE_NAME = 'diana-fitness-dynamic-v8';
 
 // Files to cache immediately on install
 const STATIC_ASSETS = [
@@ -13,6 +13,7 @@ const STATIC_ASSETS = [
     '/index.html',
     '/css/main.css',
     '/js/data.js',
+    '/js/workout-list.js',
     '/js/app.js',
     '/manifest.json',
     '/icons/icon-72x72.png',
