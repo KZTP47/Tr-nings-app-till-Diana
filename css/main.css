@@ -3375,34 +3375,73 @@ button,
 
 .wl-exercise-header {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
-    padding: var(--spacing-md);
-    border-bottom: 1px solid var(--color-border);
+    margin-bottom: var(--spacing-md);
 }
 
 .wl-exercise-info {
     flex: 1;
     min-width: 0;
+    margin-right: var(--spacing-md);
+}
+
+.wl-exercise-category {
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--color-text-tertiary);
+    margin-bottom: 2px;
 }
 
 .wl-exercise-name {
     font-size: var(--font-size-md);
     font-weight: 600;
     color: var(--color-text-primary);
-    margin-bottom: 2px;
+    margin-bottom: 4px;
 }
 
 .wl-exercise-reps {
+    display: block;
     font-size: var(--font-size-sm);
-    color: var(--color-text-tertiary);
+    color: var(--color-text-secondary);
+}
+
+.wl-exercise-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.wl-view-image-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--color-surface-secondary);
+    color: var(--color-text-secondary);
+    transition: all var(--transition-fast);
+}
+
+.wl-view-image-btn:hover {
+    background: rgba(78, 205, 196, 0.15);
+    color: var(--color-secondary);
+}
+
+.wl-view-image-btn:active {
+    transform: scale(0.95);
+    background: var(--color-secondary);
+    color: white;
 }
 
 .wl-exercise-thumb {
     width: 48px;
     height: 48px;
-    border-radius: var(--radius-md);
     object-fit: cover;
+    border-radius: var(--radius-sm);
+    flex-shrink: 0;
     background: var(--color-surface-elevated);
 }
 
@@ -3729,7 +3768,8 @@ button,
     right: 0;
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.9);
-    z-index: 2000; /* Higher than normal modal */
+    z-index: 2000;
+    /* Higher than normal modal */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -3794,12 +3834,61 @@ button,
     background: rgba(255, 255, 255, 0.2);
 }
 
+/* Active Workout Eye Button Styles */
+.current-exercise-header-row {
+    display: flex;
+    /* turbo */
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.current-exercise-name {
+    margin-bottom: 0 !important;
+    /* Override default margin */
+}
+
+.active-workout-image-btn {
+    background: var(--color-surface-secondary);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-secondary);
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.active-workout-image-btn:hover {
+    background: var(--color-surface-tertiary);
+    color: var(--color-text-primary);
+}
+
+.active-workout-image-btn.small {
+    width: 28px;
+    height: 28px;
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+.superset-ex-row {
+    display: flex;
+    align-items: center;
+}
+
+.superset-ex-name {
+    flex: 1;
+}
+
 /* Landscape adjustments */
 @media (orientation: landscape) and (max-height: 600px) {
     .full-screen-image {
         max-height: 85vh;
     }
-    
+
     .image-modal-close {
         top: 10px;
         right: 10px;

@@ -635,7 +635,7 @@
         });
 
         const closeBtn = modal.querySelector('.image-modal-close');
-        
+
         function closeImageModal() {
             modal.classList.remove('active');
             setTimeout(() => modal.remove(), 300);
@@ -648,6 +648,9 @@
             }
         });
     }
+
+    // Expose openImageModal globally for other modules
+    window.openImageModal = openImageModal;
 
     function createExerciseHTML(exercise, idx) {
         const imageHTML = exercise.image ? `<div class="exercise-image" style="background-image: url('${exercise.image}')"></div>` : '';
@@ -827,6 +830,7 @@
                     rounds: ex.rounds,
                     drops: ex.drops,
                     tip: ex.tip,
+                    image: ex.image,
                     totalSets: ex.rounds
                 });
             } else {
@@ -836,6 +840,7 @@
                     sets: ex.sets,
                     reps: ex.reps,
                     tip: ex.tip,
+                    image: ex.image,
                     totalSets: ex.sets
                 });
             }
@@ -983,7 +988,15 @@
 
         return `
             <div class="current-exercise normal-exercise">
-                <h2 class="current-exercise-name">${exercise.name}</h2>
+                <div class="current-exercise-header-row">
+                    <h2 class="current-exercise-name">${exercise.name}</h2>
+                    ${exercise.image ? `<button class="view-image-btn active-workout-image-btn" data-image="${exercise.image}" aria-label="Visa bild">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </button>` : ''}
+                </div>
                 <div class="current-exercise-target">
                     <span class="target-sets">${totalSets} set</span>
                     <span class="target-reps">${exercise.reps} reps</span>
@@ -1007,6 +1020,12 @@
                 <div class="superset-ex-row">
                     <span class="superset-ex-letter">${String.fromCharCode(65 + idx)}</span>
                     <span class="superset-ex-name">${ex.name}</span>
+                    ${ex.image ? `<button class="view-image-btn active-workout-image-btn small" data-image="${ex.image}" aria-label="Visa bild">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </button>` : ''}
                     <span class="superset-ex-reps">${ex.reps} reps</span>
                 </div>
             `).join('');
@@ -1078,7 +1097,15 @@
         return `
             <div class="current-exercise dropset-exercise">
                 <div class="dropset-badge-large">DROPSET</div>
-                <h2 class="current-exercise-name">${dropset.name}</h2>
+                <div class="current-exercise-header-row">
+                    <h2 class="current-exercise-name">${dropset.name}</h2>
+                    ${dropset.image ? `<button class="view-image-btn active-workout-image-btn" data-image="${dropset.image}" aria-label="Visa bild">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </button>` : ''}
+                </div>
                 ${dropset.tip ? `<p class="current-exercise-tip">${dropset.tip}</p>` : ''}
                 <div class="dropset-rounds-tracker">
                     ${roundsHTML.join('')}
@@ -1132,6 +1159,18 @@
         if (skipRestBtn) {
             skipRestBtn.addEventListener('click', skipRest);
         }
+
+        // View Image Buttons
+        view.querySelectorAll('.view-image-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const imageUrl = btn.dataset.image;
+                if (imageUrl) {
+                    openImageModal(imageUrl);
+                }
+            });
+        });
     }
 
     function completeSet(setIndex, view) {

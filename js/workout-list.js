@@ -311,7 +311,17 @@ const WorkoutListView = (function () {
                             <h3 class="wl-exercise-name">${exerciseName}</h3>
                             <span class="wl-exercise-reps">Tilldelad: ${repsDisplay}</span>
                         </div>
-                        ${exercise.image ? `<img src="${exercise.image}" alt="${exerciseName}" class="wl-exercise-thumb">` : ''}
+                        <div class="wl-exercise-actions">
+                            ${exercise.image ? `
+                            <button class="wl-view-image-btn" data-image="${exercise.image}" aria-label="Visa bild">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </button>
+                            <img src="${exercise.image}" alt="${exerciseName}" class="wl-exercise-thumb">
+                            ` : ''}
+                        </div>
                     </div>
                     
                     <div class="wl-sets-container">
@@ -444,6 +454,18 @@ const WorkoutListView = (function () {
             // Prevent row click when focusing input
             input.addEventListener('click', (e) => {
                 e.stopPropagation();
+            });
+        });
+
+        // View Image Buttons
+        view.querySelectorAll('.wl-view-image-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const imageUrl = btn.dataset.image;
+                if (imageUrl && window.openImageModal) {
+                    window.openImageModal(imageUrl);
+                }
             });
         });
     }
