@@ -724,12 +724,12 @@ const DianaData = (function () {
             location: 'gym',
             duration: 45,
             exercises: [
-                { name: 'Leg Press', sets: 3, reps: '15-18', image: getImageUrl('leg,press,gym,machine'), tip: 'Placera fotterna hoftbrett pa plattan. Boj knana och se till att kna och storta ar i linje, sa knana inte faller inat. I toppen ska benen vara latt bojda. Sank vikten kontrollerat tillbaka.' },
-                { name: 'Barbell Hip Thrust', sets: 3, reps: '15-18', image: getImageUrl('hip,thrust,barbell,glutes'), tip: 'Hoftbred position med dina fotter, pressa knana utat igenom hela ovningen. Sank rumpan till golvet som ar startposition, och oppna upp magen. Dar efter skopa upp med rumpan och gor magen sa liten som mojligt.' },
-                { name: 'Leg Extension', sets: 3, reps: '8-10', image: getImageUrl('leg,extension,machine,quads'), tip: 'Sitt ned med landryggen stadigt mot ryggstödet. Strack ut benen helt och sank dem sedan kontrollerat tillbaka.' },
-                { name: 'Dumbbell Step Up', sets: 3, reps: '8-10', image: getImageUrl('step,up,dumbbell,legs'), tip: 'Hoftbrett isar med fotterna, ta ett kliv upp pa bradan och ga upp till rakt staende, spann magen hela tiden.' },
-                { name: 'Machine Lying Leg Curl', sets: 3, reps: '8-10', image: getImageUrl('leg,curl,machine,hamstring'), tip: 'Ligg med ansiktet nerat i maskinen och placera vadarna bakom dynan. Boj knana och dra dynan upp mot rumpan genom att aktivera baksida lar.' },
-                { name: 'Cable Glute Kickback', sets: 3, reps: '8-10', image: getImageUrl('cable,kickback,glutes,gym'), tip: 'Sta hoftbrett isar, tank att rorelsen sker i hoftled. Kicka bak kabeln med hjalp av att pressa halen bakat!' }
+                { name: 'Leg Press', sets: 3, reps: '15-18', image: 'IMG/leg_press.jpg', tip: 'Placera fotterna hoftbrett pa plattan. Boj knana och se till att kna och storta ar i linje, sa knana inte faller inat. I toppen ska benen vara latt bojda. Sank vikten kontrollerat tillbaka.' },
+                { name: 'Barbell Hip Thrust', sets: 3, reps: '15-18', image: 'IMG/barbell_hip_thrust.jpg', tip: 'Hoftbred position med dina fotter, pressa knana utat igenom hela ovningen. Sank rumpan till golvet som ar startposition, och oppna upp magen. Dar efter skopa upp med rumpan och gor magen sa liten som mojligt.' },
+                { name: 'Leg Extension', sets: 3, reps: '8-10', image: 'IMG/leg_extension.jpg', tip: 'Sitt ned med landryggen stadigt mot ryggstödet. Strack ut benen helt och sank dem sedan kontrollerat tillbaka.' },
+                { name: 'Dumbbell Step Up', sets: 3, reps: '8-10', image: 'IMG/dumbbell_step_up.jpg', tip: 'Hoftbrett isar med fotterna, ta ett kliv upp pa bradan och ga upp till rakt staende, spann magen hela tiden.' },
+                { name: 'Machine Lying Leg Curl', sets: 3, reps: '8-10', image: 'IMG/machine_lying_leg_curl.jpg', tip: 'Ligg med ansiktet nerat i maskinen och placera vadarna bakom dynan. Boj knana och dra dynan upp mot rumpan genom att aktivera baksida lar.' },
+                { name: 'Cable Glute Kickback', sets: 3, reps: '8-10', image: 'IMG/cable_glute_kickback.jpg', tip: 'Sta hoftbrett isar, tank att rorelsen sker i hoftled. Kicka bak kabeln med hjalp av att pressa halen bakat!' }
             ]
         },
         'pass-2-home': {
@@ -738,12 +738,12 @@ const DianaData = (function () {
             location: 'home',
             duration: 40,
             exercises: [
-                { name: 'Bench Press, Dumbbell', sets: 5, reps: '5', image: getImageUrl('dumbbell,bench,press,chest'), tip: 'Sank axlarna och dra ihop skulderbladen sa de ligger stadigt mot banken eller golvet. Ta ett djupt andetag och sank hantlarna kontrollerat.' },
-                { name: 'Dumbbell Fly', sets: 3, reps: '10', image: getImageUrl('dumbbell,fly,chest,exercise'), tip: 'Ligg pa en bank med en hantel i varje hand, fotterna stabilt pa golvet. Starta med hantlarna rakt over dig med latt bojda armar.' },
-                { name: 'Seated Dumbbell Press', sets: 3, reps: '6-8', image: getImageUrl('shoulder,press,dumbbell,seated'), tip: 'Sanka axlar, stolt brost! Raka handleder! Hantlarna borjar i hakans hoj, pressa rakt uppat.' },
-                { name: 'Dumbbell Lateral Raise', sets: 3, reps: '10', image: getImageUrl('lateral,raise,dumbbell,shoulders'), tip: 'Hantlarna gar rakt ut at sidan, upp till axelhojd med raka armar. Spann balen for att undvika att svinga med resten av kroppen.' },
-                { name: 'Dumbbell Triceps Kickback', sets: 3, reps: '15-18', image: getImageUrl('triceps,kickback,dumbbell'), tip: 'Stall dig bredvid en bank, placera ena handen pa banken och lut framatkroppen parallellt med golvet.' },
-                { name: 'Dumbbell Bicep Curl', sets: 3, reps: '15-18', image: getImageUrl('bicep,curl,dumbbell,arms'), tip: 'Sanka axlar, stolt brost! Las fast armbagarna vid sidan av kroppen och lat underarmen vara den enda delen som ror sig!' }
+                { name: 'Bench Press, Dumbbell', sets: 5, reps: '5', image: 'IMG/dumbbell_bench_press.jpg', tip: 'Sank axlarna och dra ihop skulderbladen sa de ligger stadigt mot banken eller golvet. Ta ett djupt andetag och sank hantlarna kontrollerat.' },
+                { name: 'Dumbbell Fly', sets: 3, reps: '10', image: 'IMG/dumbbell_fly.jpg', tip: 'Ligg pa en bank med en hantel i varje hand, fotterna stabilt pa golvet. Starta med hantlarna rakt over dig med latt bojda armar.' },
+                { name: 'Seated Dumbbell Press', sets: 3, reps: '6-8', image: 'IMG/seated_dumbbell_press.jpg', tip: 'Sanka axlar, stolt brost! Raka handleder! Hantlarna borjar i hakans hoj, pressa rakt uppat.' },
+                { name: 'Dumbbell Lateral Raise', sets: 3, reps: '10', image: 'IMG/dumbbell_lateral_raise.jpg', tip: 'Hantlarna gar rakt ut at sidan, upp till axelhojd med raka armar. Spann balen for att undvika att svinga med resten av kroppen.' },
+                { name: 'Dumbbell Triceps Kickback', sets: 3, reps: '15-18', image: 'IMG/dumbbell_triceps_kickback.jpg', tip: 'Stall dig bredvid en bank, placera ena handen pa banken och lut framatkroppen parallellt med golvet.' },
+                { name: 'Dumbbell Bicep Curl', sets: 3, reps: '15-18', image: 'IMG/dumbbell_bicep_curl.jpg', tip: 'Sanka axlar, stolt brost! Las fast armbagarna vid sidan av kroppen och lat underarmen vara den enda delen som ror sig!' }
             ]
         },
         'pass-3-home': {
@@ -752,17 +752,17 @@ const DianaData = (function () {
             location: 'home',
             duration: 40,
             exercises: [
-                { name: 'Butterfly Glute Bridge', sets: 3, reps: '15-18', image: getImageUrl('glute,bridge,butterfly,home'), tip: 'Placera fotsulorna mot varandra och pressa knana utat sidan. Squeeza rumpan och pressa upp hoften sa hogt du kan.' },
-                { name: 'Single Leg Dumbbell Hip Thrust', sets: 3, reps: '15-18', image: getImageUrl('single,leg,hip,thrust'), tip: 'Hoftbredd position med dina fotter, lyft ena benet rakt ut i samband med att rumpan pressas upp.' },
-                { name: 'Dumbbell Step Up', sets: 3, reps: '15-18', image: getImageUrl('step,up,dumbbell,exercise'), tip: 'Hoftbrett isar med fotterna, ta ett kliv upp pa bradan och ga upp till rakt staende.' },
+                { name: 'Butterfly Glute Bridge', sets: 3, reps: '15-18', image: 'IMG/butterfly_glute_bridge.jpg', tip: 'Placera fotsulorna mot varandra och pressa knana utat sidan. Squeeza rumpan och pressa upp hoften sa hogt du kan.' },
+                { name: 'Single Leg Dumbbell Hip Thrust', sets: 3, reps: '15-18', image: 'IMG/single_leg_dumbbell_hip_thrust.jpg', tip: 'Hoftbredd position med dina fotter, lyft ena benet rakt ut i samband med att rumpan pressas upp.' },
+                { name: 'Dumbbell Step Up', sets: 3, reps: '15-18', image: 'IMG/dumbbell_step_up.jpg', tip: 'Hoftbrett isar med fotterna, ta ett kliv upp pa bradan och ga upp till rakt staende.' },
                 {
                     name: 'Superset',
                     type: 'superset',
                     rounds: 3,
                     exercises: [
-                        { name: 'Banded Bodyweight Squat', reps: '15-18', image: getImageUrl('banded,squat,resistance') },
-                        { name: 'Glute Bridge, Banded', reps: '15-18', image: getImageUrl('glute,bridge,band') },
-                        { name: 'Banded Fire Hydrant', reps: '15-18', image: getImageUrl('fire,hydrant,band,glutes') }
+                        { name: 'Banded Bodyweight Squat', reps: '15-18', image: 'IMG/banded_bodyweight_squat.jpg' },
+                        { name: 'Glute Bridge, Banded', reps: '15-18', image: 'IMG/banded_glute_bridge.jpg' },
+                        { name: 'Banded Fire Hydrant', reps: '15-18', image: 'IMG/banded_fire_hydrant.jpg' }
                     ]
                 }
             ]
@@ -773,13 +773,13 @@ const DianaData = (function () {
             location: 'gym',
             duration: 45,
             exercises: [
-                { name: 'Wide Grip Pull Down', sets: 3, reps: '15-18', image: getImageUrl('lat,pulldown,wide,grip'), tip: 'Anvand ett brett grepp med handflatorna bort fran dig. Borja med armarna helt utstrakta, sank axlarna for att aktivera skulderbladen.' },
-                { name: 'Band Pull Apart', sets: 3, reps: '15-18', image: getImageUrl('band,pull,apart,back'), tip: 'Sta stadigt, hall ett axelbrett avstand pa bandet och pressa bandet rakt utat at varje sida.' },
-                { name: 'Incline Dumbbell Row', sets: 3, reps: '8-10', image: getImageUrl('incline,dumbbell,row,back'), tip: 'Dra upp hantlarna tills armarna ar i 90 graders vinkel.' },
-                { name: 'Standing Barbell Bicep Curl', sets: 3, reps: '15-18', image: getImageUrl('barbell,bicep,curl'), tip: 'Las fast armbagarna vid sidan av kroppen och lat underarmen vara den enda delen som ror sig!' },
-                { name: 'Renegade Row', sets: 3, reps: '8-10', image: getImageUrl('renegade,row,plank'), tip: 'Sta och hall balansen pa ett par hantlar eller KB, arbeta med ena sidan i taget genom att dra upp ena armen pa sidan av kroppen.' },
-                { name: 'Sidoliggande magindrag', sets: 3, reps: '30 sek', image: getImageUrl('side,plank,core'), tip: 'Ligg pa sidan, knip och dra in nedre delen av magen likt ett blixtlas. Hall i 30 sek.' },
-                { name: 'Floor Leg Raise', sets: 3, reps: '15-18', image: getImageUrl('leg,raise,floor,abs'), tip: 'Ligg pa rygg med handerna under landryggen. Sank ner fran 90 graders vinkel i hoften med raka ben hela vagen ner till golvet utan att slappa magen.' }
+                { name: 'Wide Grip Pull Down', sets: 3, reps: '15-18', image: 'IMG/wide_grip_pull_down.jpg', tip: 'Anvand ett brett grepp med handflatorna bort fran dig. Borja med armarna helt utstrakta, sank axlarna for att aktivera skulderbladen.' },
+                { name: 'Band Pull Apart', sets: 3, reps: '15-18', image: 'IMG/band_pull_apart.jpg', tip: 'Sta stadigt, hall ett axelbrett avstand pa bandet och pressa bandet rakt utat at varje sida.' },
+                { name: 'Incline Dumbbell Row', sets: 3, reps: '8-10', image: 'IMG/incline_dumbbell_row.jpg', tip: 'Dra upp hantlarna tills armarna ar i 90 graders vinkel.' },
+                { name: 'Standing Barbell Bicep Curl', sets: 3, reps: '15-18', image: 'IMG/standing_barbell_bicep_curl.jpg', tip: 'Las fast armbagarna vid sidan av kroppen och lat underarmen vara den enda delen som ror sig!' },
+                { name: 'Renegade Row', sets: 3, reps: '8-10', image: 'IMG/renegade_row.jpg', tip: 'Sta och hall balansen pa ett par hantlar eller KB, arbeta med ena sidan i taget genom att dra upp ena armen pa sidan av kroppen.' },
+                { name: 'Sidoliggande magindrag', sets: 3, reps: '30 sek', image: 'IMG/sidoliggande_magindrag.jpg', tip: 'Ligg pa sidan, knip och dra in nedre delen av magen likt ett blixtlas. Hall i 30 sek.' },
+                { name: 'Floor Leg Raise', sets: 3, reps: '15-18', image: 'IMG/floor_leg_raise.jpg', tip: 'Ligg pa rygg med handerna under landryggen. Sank ner fran 90 graders vinkel i hoften med raka ben hela vagen ner till golvet utan att slappa magen.' }
             ]
         }
     };
@@ -795,19 +795,19 @@ const DianaData = (function () {
             location: 'gym',
             duration: 50,
             exercises: [
-                { name: 'Squat', sets: 5, reps: '5', image: getImageUrl('barbell,squat,gym,legs'), tip: 'Sta hoftbrett isar, sitt langt ner och bak. Spann din bal innan du gor lyftet och hall anspanningen genom hela rorelsen.' },
-                { name: 'Barbell Hip Thrust', sets: 3, reps: '6-8', image: getImageUrl('hip,thrust,barbell,glutes'), tip: 'Hoftbred position med dina fotter, pressa knana utat igenom hela ovningen.' },
+                { name: 'Squat', sets: 5, reps: '5', image: 'IMG/squat.jpg', tip: 'Sta hoftbrett isar, sitt langt ner och bak. Spann din bal innan du gor lyftet och hall anspanningen genom hela rorelsen.' },
+                { name: 'Barbell Hip Thrust', sets: 3, reps: '6-8', image: 'IMG/barbell_hip_thrust.jpg', tip: 'Hoftbred position med dina fotter, pressa knana utat igenom hela ovningen.' },
                 {
                     name: 'Superset',
                     type: 'superset',
                     rounds: 3,
                     exercises: [
-                        { name: 'Leg Press, Single Leg', reps: '10', image: getImageUrl('single,leg,press') },
-                        { name: 'Bodyweight Lateral Lunge', reps: '12', image: getImageUrl('lateral,lunge,bodyweight') }
+                        { name: 'Leg Press, Single Leg', reps: '10', image: 'IMG/single_leg_press.jpg' },
+                        { name: 'Bodyweight Lateral Lunge', reps: '12', image: 'IMG/bodyweight_lateral_lunge.jpg' }
                     ]
                 },
-                { name: 'Seated Leg Curl', sets: 3, reps: '12', image: getImageUrl('seated,leg,curl,machine'), tip: 'Sitt ned med landryggen i kontakt med ryggstödet hela tiden. Spann magen och pressa ner vikten.' },
-                { name: 'Machine Hip Abduction', sets: 3, reps: '12', image: getImageUrl('hip,abduction,machine'), tip: 'Pressa ut knana och forsok tanka pa att squeeza med rumpan i topplaget!' }
+                { name: 'Seated Leg Curl', sets: 3, reps: '12', image: 'IMG/seated_leg_curl.jpg', tip: 'Sitt ned med landryggen i kontakt med ryggstödet hela tiden. Spann magen och pressa ner vikten.' },
+                { name: 'Machine Hip Abduction', sets: 3, reps: '12', image: 'IMG/machine_hip_abduction.jpg', tip: 'Pressa ut knana och forsok tanka pa att squeeza med rumpan i topplaget!' }
             ]
         },
         'pass-2-home': {
@@ -816,12 +816,12 @@ const DianaData = (function () {
             location: 'home',
             duration: 40,
             exercises: [
-                { name: 'Bench Press, Dumbbell', sets: 5, reps: '5', image: getImageUrl('dumbbell,bench,press'), tip: 'Sank axlarna och dra ihop skulderbladen sa de ligger stadigt mot banken eller golvet.' },
-                { name: 'Dumbbell Fly', sets: 3, reps: '10', image: getImageUrl('dumbbell,fly,chest'), tip: 'Ligg pa en bank med en hantel i varje hand, fotterna stabilt pa golvet.' },
-                { name: 'Seated Dumbbell Press', sets: 3, reps: '6-8', image: getImageUrl('seated,dumbbell,press,shoulders'), tip: 'Sanka axlar, stolt brost! Raka handleder! Hantlarna borjar i hakans hoj, pressa rakt uppat.' },
-                { name: 'Dumbbell Lateral Raise', sets: 3, reps: '10', image: getImageUrl('lateral,raise,shoulders'), tip: 'Hantlarna gar rakt ut at sidan, upp till axelhojd med raka armar.' },
-                { name: 'Dumbbell Triceps Kickback', sets: 3, reps: '15-18', image: getImageUrl('triceps,kickback,dumbbell'), tip: 'Stall dig bredvid en bank, placera ena handen pa banken och lut framatkroppen.' },
-                { name: 'Dumbbell Bicep Curl', sets: 3, reps: '15-18', image: getImageUrl('bicep,curl,dumbbell'), tip: 'Las fast armbagarna vid sidan av kroppen.' }
+                { name: 'Bench Press, Dumbbell', sets: 5, reps: '5', image: 'IMG/dumbbell_bench_press.jpg', tip: 'Sank axlarna och dra ihop skulderbladen sa de ligger stadigt mot banken eller golvet.' },
+                { name: 'Dumbbell Fly', sets: 3, reps: '10', image: 'IMG/dumbbell_fly.jpg', tip: 'Ligg pa en bank med en hantel i varje hand, fotterna stabilt pa golvet.' },
+                { name: 'Seated Dumbbell Press', sets: 3, reps: '6-8', image: 'IMG/seated_dumbbell_press.jpg', tip: 'Sanka axlar, stolt brost! Raka handleder! Hantlarna borjar i hakans hoj, pressa rakt uppat.' },
+                { name: 'Dumbbell Lateral Raise', sets: 3, reps: '10', image: 'IMG/dumbbell_lateral_raise.jpg', tip: 'Hantlarna gar rakt ut at sidan, upp till axelhojd med raka armar.' },
+                { name: 'Dumbbell Triceps Kickback', sets: 3, reps: '15-18', image: 'IMG/dumbbell_triceps_kickback.jpg', tip: 'Stall dig bredvid en bank, placera ena handen pa banken och lut framatkroppen.' },
+                { name: 'Dumbbell Bicep Curl', sets: 3, reps: '15-18', image: 'IMG/dumbbell_bicep_curl.jpg', tip: 'Las fast armbagarna vid sidan av kroppen.' }
             ]
         },
         'pass-3-home': {
@@ -830,20 +830,20 @@ const DianaData = (function () {
             location: 'home',
             duration: 45,
             exercises: [
-                { name: 'Barbell Hip Thrust', sets: 3, reps: '10', image: getImageUrl('hip,thrust,home,glutes'), tip: 'Hoftbred fotposition och skulderbladen pa en bank och pressa upp hoften.' },
-                { name: 'Dumbbell Goblet Squat', sets: 3, reps: '6-8', image: getImageUrl('goblet,squat,dumbbell'), tip: 'Sitt ner och bak och hall i vikten vid ditt brost. Spann magen.' },
-                { name: 'Dumbbell Reverse Lunge', sets: 3, reps: '6-8', image: getImageUrl('reverse,lunge,dumbbell'), tip: 'Hoftbred fotställning. Ta ett stort kliv bak och sank ner tills framre knaet ar i 90 graders vinkel.' },
+                { name: 'Barbell Hip Thrust', sets: 3, reps: '10', image: 'IMG/barbell_hip_thrust.jpg', tip: 'Hoftbred fotposition och skulderbladen pa en bank och pressa upp hoften.' },
+                { name: 'Dumbbell Goblet Squat', sets: 3, reps: '6-8', image: 'IMG/dumbbell_goblet_squat.jpg', tip: 'Sitt ner och bak och hall i vikten vid ditt brost. Spann magen.' },
+                { name: 'Dumbbell Reverse Lunge', sets: 3, reps: '6-8', image: 'IMG/dumbbell_reverse_lunge.jpg', tip: 'Hoftbred fotställning. Ta ett stort kliv bak och sank ner tills framre knaet ar i 90 graders vinkel.' },
                 {
                     name: 'Superset',
                     type: 'superset',
                     rounds: 3,
                     exercises: [
-                        { name: 'Banded Bodyweight Squat', reps: '12', image: getImageUrl('banded,squat') },
-                        { name: 'Glute Bridge, Banded', reps: '12', image: getImageUrl('glute,bridge,resistance,band') },
-                        { name: 'Banded Fire Hydrant', reps: '12', image: getImageUrl('fire,hydrant,exercise') }
+                        { name: 'Banded Bodyweight Squat', reps: '12', image: 'IMG/banded_bodyweight_squat.jpg' },
+                        { name: 'Glute Bridge, Banded', reps: '12', image: 'IMG/banded_glute_bridge.jpg' },
+                        { name: 'Banded Fire Hydrant', reps: '12', image: 'IMG/banded_fire_hydrant.jpg' }
                     ]
                 },
-                { name: 'Dumbbell Straight Leg Deadlift', sets: 3, reps: '15-18', image: getImageUrl('stiff,leg,deadlift,dumbbell'), tip: 'Hoftbrett eller lite bredare fotställning. Bojningen sker i hoften och rumpan gar rakt bakat.' }
+                { name: 'Dumbbell Straight Leg Deadlift', sets: 3, reps: '15-18', image: 'IMG/dumbbell_straight_leg_deadlift.jpg', tip: 'Hoftbrett eller lite bredare fotställning. Bojningen sker i hoften och rumpan gar rakt bakat.' }
             ]
         },
         'pass-4-gym': {
@@ -852,13 +852,13 @@ const DianaData = (function () {
             location: 'gym',
             duration: 50,
             exercises: [
-                { name: 'T-Bar Row', sets: 3, reps: '6-8', image: getImageUrl('t,bar,row,back'), tip: 'Boj i hoften men behall en stolt hallning. Dra stangen upp mot naveln, armbagarna gar langs med sidan av kroppen.' },
-                { name: 'V-Bar Pull Down', sets: 3, reps: '6-8', image: getImageUrl('v,bar,pulldown,lats'), tip: 'V-grepp pa handtaget, sank ner axlarna forst darefter dra ner till mellan hakan och brosthojd.' },
-                { name: 'Seated Wide Grip Cable Row', sets: 3, reps: '12', image: getImageUrl('cable,row,wide,grip'), tip: 'Sitt upprätt vid kabelroddmaskinen med fotterna mot fotstöden och ta tag i ett brett handtag.' },
-                { name: 'Cable Rope Bent Over Row', sets: 3, reps: '12', image: getImageUrl('cable,rope,row'), tip: 'Sanka axlar, stolt brost! Las fast armbagarna vid sidan av kroppen.' },
-                { name: 'Ez Bar Bicep Curl', sets: 3, reps: '10', image: getImageUrl('ez,bar,curl,biceps'), tip: 'Lat underarmen vara den enda delen som ror sig!' },
-                { name: 'Mountain Climber', sets: 3, reps: '20 sek', image: getImageUrl('mountain,climber,cardio'), tip: 'Borja i hog plankposition, dra hoger kna mot brost - aterga till plankposition och dra vanster kna mot brost. Upprepa i tempo.' },
-                { name: 'Exercise Ball Crunch', sets: 3, reps: '10', image: getImageUrl('exercise,ball,crunch,abs'), tip: 'Fotterna stadigt i golvet, spann rumpan sa du haller en rak hoft hela tiden. Darefter boj bak overkroppen over bollen och spann sen magens muskler.' }
+                { name: 'T-Bar Row', sets: 3, reps: '6-8', image: 'IMG/t_bar_row.jpg', tip: 'Boj i hoften men behall en stolt hallning. Dra stangen upp mot naveln, armbagarna gar langs med sidan av kroppen.' },
+                { name: 'V-Bar Pull Down', sets: 3, reps: '6-8', image: 'IMG/v_bar_pull_down.jpg', tip: 'V-grepp pa handtaget, sank ner axlarna forst darefter dra ner till mellan hakan och brosthojd.' },
+                { name: 'Seated Wide Grip Cable Row', sets: 3, reps: '12', image: 'IMG/seated_wide_grip_cable_row.jpg', tip: 'Sitt upprätt vid kabelroddmaskinen med fotterna mot fotstöden och ta tag i ett brett handtag.' },
+                { name: 'Cable Rope Bent Over Row', sets: 3, reps: '12', image: 'IMG/cable_rope_bent_over_row.jpg', tip: 'Sanka axlar, stolt brost! Las fast armbagarna vid sidan av kroppen.' },
+                { name: 'Ez Bar Bicep Curl', sets: 3, reps: '10', image: 'IMG/ez_bar_bicep_curl.jpg', tip: 'Lat underarmen vara den enda delen som ror sig!' },
+                { name: 'Mountain Climber', sets: 3, reps: '20 sek', image: 'IMG/mountain_climber.jpg', tip: 'Borja i hog plankposition, dra hoger kna mot brost - aterga till plankposition och dra vanster kna mot brost. Upprepa i tempo.' },
+                { name: 'Exercise Ball Crunch', sets: 3, reps: '10', image: 'IMG/exercise_ball_crunch.jpg', tip: 'Fotterna stadigt i golvet, spann rumpan sa du haller en rak hoft hela tiden. Darefter boj bak overkroppen over bollen och spann sen magens muskler.' }
             ]
         }
     };
@@ -874,12 +874,12 @@ const DianaData = (function () {
             location: 'home',
             duration: 50,
             exercises: [
-                { name: 'Dumbbell Front Squat', sets: 4, reps: '4-6', image: getImageUrl('front,squat,dumbbell'), tip: 'Hall en hantel i varje hand vid axlarna, med armbagarna pekande framat och brostet upprätt.' },
+                { name: 'Dumbbell Front Squat', sets: 4, reps: '4-6', image: 'IMG/dumbbell_front_squat.jpg', tip: 'Hall en hantel i varje hand vid axlarna, med armbagarna pekande framat och brostet upprätt.' },
                 {
                     name: 'Barbell Hip Thrust (Dropset)',
                     type: 'dropset',
                     rounds: 3,
-                    image: getImageUrl('hip,thrust,barbell,dropset'),
+                    image: 'IMG/barbell_hip_thrust.jpg',
                     drops: [
                         { reps: '4-6', note: 'Tung vikt' },
                         { reps: '12', note: 'Lattare vikt' },
@@ -891,7 +891,7 @@ const DianaData = (function () {
                     name: 'Dumbbell Sumo Squat (Dropset)',
                     type: 'dropset',
                     rounds: 3,
-                    image: getImageUrl('sumo,squat,dumbbell'),
+                    image: 'IMG/dumbbell_sumo_squat.jpg',
                     drops: [
                         { reps: '4-6', note: 'Tung vikt' },
                         { reps: '16', note: 'Lattare vikt' }
@@ -903,9 +903,9 @@ const DianaData = (function () {
                     type: 'superset',
                     rounds: 3,
                     exercises: [
-                        { name: 'Single Leg Dumbbell Hip Thrust', reps: '4-6', image: getImageUrl('single,leg,hip,thrust') },
-                        { name: 'Glute Bridge, Banded', reps: '4-6', image: getImageUrl('glute,bridge,band') },
-                        { name: 'Banded Hip Abduction', reps: '4-6', image: getImageUrl('hip,abduction,band') }
+                        { name: 'Single Leg Dumbbell Hip Thrust', reps: '4-6', image: 'IMG/single_leg_dumbbell_hip_thrust.jpg' },
+                        { name: 'Glute Bridge, Banded', reps: '4-6', image: 'IMG/banded_glute_bridge.jpg' },
+                        { name: 'Banded Hip Abduction', reps: '4-6', image: 'IMG/banded_hip_abduction.jpg' }
                     ]
                 }
             ]
@@ -916,19 +916,19 @@ const DianaData = (function () {
             location: 'home',
             duration: 45,
             exercises: [
-                { name: 'Seated Dumbbell Press', sets: 4, reps: '4-6', image: getImageUrl('seated,dumbbell,shoulder,press'), tip: 'Sanka axlar, stolt brost! Raka handleder! Hantlarna borjar i hakans hoj, pressa rakt uppat.' },
-                { name: 'Dumbbell Lateral Raise', sets: 4, reps: '4-6', image: getImageUrl('dumbbell,lateral,raise'), tip: 'Hantlarna gar rakt ut at sidan, upp till axelhojd med raka armar.' },
+                { name: 'Seated Dumbbell Press', sets: 4, reps: '4-6', image: 'IMG/seated_dumbbell_press.jpg', tip: 'Sanka axlar, stolt brost! Raka handleder! Hantlarna borjar i hakans hoj, pressa rakt uppat.' },
+                { name: 'Dumbbell Lateral Raise', sets: 4, reps: '4-6', image: 'IMG/dumbbell_lateral_raise.jpg', tip: 'Hantlarna gar rakt ut at sidan, upp till axelhojd med raka armar.' },
                 {
                     name: 'Superset',
                     type: 'superset',
                     rounds: 3,
                     exercises: [
-                        { name: 'Wall Push Up', reps: '4', image: getImageUrl('wall,push,up') },
-                        { name: 'Close Grip Bench Push Up', reps: '4', image: getImageUrl('close,grip,push,up') },
-                        { name: 'Push Up', reps: '4', image: getImageUrl('push,up,exercise') }
+                        { name: 'Wall Push Up', reps: '4', image: 'IMG/wall_push_up.jpg' },
+                        { name: 'Close Grip Bench Push Up', reps: '4', image: 'IMG/close_grip_bench_push_up.jpg' },
+                        { name: 'Push Up', reps: '4', image: 'IMG/push_up.jpg' }
                     ]
                 },
-                { name: 'Standing Bent Over Dumbbell Rear Delt Fly', sets: 4, reps: '4-6', image: getImageUrl('rear,delt,fly,dumbbell'), tip: 'En hantel i varje hand. Sta framatlutad. Pressa armarna rakt ut med hjalp av dina axlar.' }
+                { name: 'Standing Bent Over Dumbbell Rear Delt Fly', sets: 4, reps: '4-6', image: 'IMG/dumbbell_rear_delt_fly.jpg', tip: 'En hantel i varje hand. Sta framatlutad. Pressa armarna rakt ut med hjalp av dina axlar.' }
             ]
         },
         'pass-3-gym': {
@@ -937,13 +937,13 @@ const DianaData = (function () {
             location: 'gym',
             duration: 55,
             exercises: [
-                { name: 'Seated Cable Row', sets: 4, reps: '4-6', image: getImageUrl('seated,cable,row,back'), tip: 'Sanka axlar, stolt brost! Sikta mot naveln, armbagarna gar rakt bakat nara kroppen.' },
-                { name: 'Bench Press', sets: 4, reps: '4-6', image: getImageUrl('bench,press,barbell,chest'), tip: 'Sanka axlar, stolt brost! Sikta pa mitten av brostet.' },
+                { name: 'Seated Cable Row', sets: 4, reps: '4-6', image: 'IMG/seated_cable_row.jpg', tip: 'Sanka axlar, stolt brost! Sikta mot naveln, armbagarna gar rakt bakat nara kroppen.' },
+                { name: 'Bench Press', sets: 4, reps: '4-6', image: 'IMG/bench_press.jpg', tip: 'Sanka axlar, stolt brost! Sikta pa mitten av brostet.' },
                 {
                     name: 'Wide Grip Pull Down (Dropset)',
                     type: 'dropset',
                     rounds: 3,
-                    image: getImageUrl('lat,pulldown,dropset'),
+                    image: 'IMG/wide_grip_pull_down.jpg',
                     drops: [
                         { reps: '4-6', note: 'Tung vikt' },
                         { reps: '8', note: 'Lattare vikt' },
@@ -955,7 +955,7 @@ const DianaData = (function () {
                     name: 'One Arm Dumbbell Bent Over Row (Dropset)',
                     type: 'dropset',
                     rounds: 3,
-                    image: getImageUrl('one,arm,dumbbell,row'),
+                    image: 'IMG/one_arm_dumbbell_bent_over_row.jpg',
                     drops: [
                         { reps: '4-6', note: 'Tung vikt' },
                         { reps: '8', note: 'Lattare vikt' },
@@ -963,7 +963,7 @@ const DianaData = (function () {
                     ],
                     tip: 'Luta dig fram och spann magen. Dra upp ena armen nara kroppen och hall emot pa vagen tillbaka.'
                 },
-                { name: 'Crunch', sets: 4, reps: '4-6', image: getImageUrl('crunch,abs,exercise'), tip: 'Pressa overkroppen uppat med hjalp av magen. forsok att slappna av i nacken.' }
+                { name: 'Crunch', sets: 4, reps: '4-6', image: 'IMG/crunch.jpg', tip: 'Pressa overkroppen uppat med hjalp av magen. forsok att slappna av i nacken.' }
             ]
         },
         'pass-4-gym': {
@@ -976,7 +976,7 @@ const DianaData = (function () {
                     name: 'Leg Press (Dropset)',
                     type: 'dropset',
                     rounds: 2,
-                    image: getImageUrl('leg,press,machine,dropset'),
+                    image: 'IMG/leg_press.jpg',
                     drops: [
                         { reps: '18', note: 'Latt vikt' },
                         { reps: '15', note: 'Oka vikt' },
@@ -987,12 +987,12 @@ const DianaData = (function () {
                     ],
                     tip: 'Placera fotterna hoftbrett. Har ar tanken att du ska oka vikten vid varje drop du gor.'
                 },
-                { name: 'Barbell Hip Thrust', sets: 4, reps: '4-6', image: getImageUrl('barbell,hip,thrust,glutes'), tip: 'Hoftbredd position med dina fotter, pressa knana utat igenom hela ovningen.' },
+                { name: 'Barbell Hip Thrust', sets: 4, reps: '4-6', image: 'IMG/barbell_hip_thrust.jpg', tip: 'Hoftbredd position med dina fotter, pressa knana utat igenom hela ovningen.' },
                 {
                     name: 'Leg Extension (Dropset)',
                     type: 'dropset',
                     rounds: 3,
-                    image: getImageUrl('leg,extension,dropset'),
+                    image: 'IMG/leg_extension.jpg',
                     drops: [
                         { reps: '4-6', note: 'Tung vikt' },
                         { reps: '8', note: 'Lattare vikt' },
@@ -1000,12 +1000,12 @@ const DianaData = (function () {
                     ],
                     tip: 'Sitt ned med landryggen i kontakt med ryggstödet hela tiden.'
                 },
-                { name: 'Dumbbell Goblet Squat', sets: 4, reps: '4-6', image: getImageUrl('goblet,squat,dumbbell,legs'), tip: 'Sitt ner och bak och hall i vikten vid ditt brost. Spann magen.' },
+                { name: 'Dumbbell Goblet Squat', sets: 4, reps: '4-6', image: 'IMG/dumbbell_goblet_squat.jpg', tip: 'Sitt ner och bak och hall i vikten vid ditt brost. Spann magen.' },
                 {
                     name: 'Seated Leg Curl (Dropset)',
                     type: 'dropset',
                     rounds: 3,
-                    image: getImageUrl('seated,leg,curl,dropset'),
+                    image: 'IMG/seated_leg_curl.jpg',
                     drops: [
                         { reps: '4-6', note: 'Tung vikt' },
                         { reps: '8', note: 'Lattare vikt' },
@@ -1031,22 +1031,22 @@ const DianaData = (function () {
                     name: 'Helkropp Pass 1',
                     duration: 45,
                     exercises: [
-                        { name: 'Squat', sets: 4, reps: '8-10', image: getImageUrl('squat,barbell,gym') },
-                        { name: 'Romanian Deadlift', sets: 3, reps: '10-12', image: getImageUrl('romanian,deadlift') },
-                        { name: 'Bench Press', sets: 4, reps: '8-10', image: getImageUrl('bench,press,gym') },
-                        { name: 'Lat Pulldown', sets: 3, reps: '10-12', image: getImageUrl('lat,pulldown') },
-                        { name: 'Shoulder Press', sets: 3, reps: '10-12', image: getImageUrl('shoulder,press') }
+                        { name: 'Squat', sets: 4, reps: '8-10', image: 'IMG/squat.jpg' },
+                        { name: 'Romanian Deadlift', sets: 3, reps: '10-12', image: 'IMG/romanian_deadlift.jpg' },
+                        { name: 'Bench Press', sets: 4, reps: '8-10', image: 'IMG/bench_press.jpg' },
+                        { name: 'Lat Pulldown', sets: 3, reps: '10-12', image: 'IMG/lat_pulldown.jpg' },
+                        { name: 'Shoulder Press', sets: 3, reps: '10-12', image: 'IMG/shoulder_press.jpg' }
                     ]
                 },
                 {
                     name: 'Helkropp Pass 2',
                     duration: 45,
                     exercises: [
-                        { name: 'Leg Press', sets: 4, reps: '10-12', image: getImageUrl('leg,press,gym') },
-                        { name: 'Hip Thrust', sets: 3, reps: '12-15', image: getImageUrl('hip,thrust') },
-                        { name: 'Dumbbell Row', sets: 3, reps: '10-12', image: getImageUrl('dumbbell,row') },
-                        { name: 'Chest Fly', sets: 3, reps: '12-15', image: getImageUrl('chest,fly,machine') },
-                        { name: 'Face Pull', sets: 3, reps: '15-18', image: getImageUrl('face,pull,cable') }
+                        { name: 'Leg Press', sets: 4, reps: '10-12', image: 'IMG/leg_press.jpg' },
+                        { name: 'Hip Thrust', sets: 3, reps: '12-15', image: 'IMG/hip_thrust.jpg' },
+                        { name: 'Dumbbell Row', sets: 3, reps: '10-12', image: 'IMG/dumbbell_row.jpg' },
+                        { name: 'Chest Fly', sets: 3, reps: '12-15', image: 'IMG/chest_fly.jpg' },
+                        { name: 'Face Pull', sets: 3, reps: '15-18', image: 'IMG/face_pull.jpg' }
                     ]
                 }
             ]
@@ -1060,20 +1060,20 @@ const DianaData = (function () {
                     name: 'Gummiband Underkropp',
                     duration: 30,
                     exercises: [
-                        { name: 'Banded Squat', sets: 3, reps: '15-20', image: getImageUrl('banded,squat,resistance') },
-                        { name: 'Banded Glute Bridge', sets: 3, reps: '15-20', image: getImageUrl('banded,glute,bridge') },
-                        { name: 'Banded Clamshell', sets: 3, reps: '15-20', image: getImageUrl('clamshell,exercise,band') },
-                        { name: 'Banded Kickback', sets: 3, reps: '15-20', image: getImageUrl('banded,kickback,glutes') }
+                        { name: 'Banded Squat', sets: 3, reps: '15-20', image: 'IMG/banded_squat.jpg' },
+                        { name: 'Banded Glute Bridge', sets: 3, reps: '15-20', image: 'IMG/banded_glute_bridge.jpg' },
+                        { name: 'Banded Clamshell', sets: 3, reps: '15-20', image: 'IMG/banded_clamshell.jpg' },
+                        { name: 'Banded Kickback', sets: 3, reps: '15-20', image: 'IMG/banded_kickback.jpg' }
                     ]
                 },
                 {
                     name: 'Gummiband Overkropp',
                     duration: 30,
                     exercises: [
-                        { name: 'Banded Pull Apart', sets: 3, reps: '15-20', image: getImageUrl('band,pull,apart') },
-                        { name: 'Banded Bicep Curl', sets: 3, reps: '15-20', image: getImageUrl('banded,bicep,curl') },
-                        { name: 'Banded Tricep Extension', sets: 3, reps: '15-20', image: getImageUrl('banded,tricep,extension') },
-                        { name: 'Banded Shoulder Press', sets: 3, reps: '15-20', image: getImageUrl('banded,shoulder,press') }
+                        { name: 'Banded Pull Apart', sets: 3, reps: '15-20', image: 'IMG/band_pull_apart.jpg' },
+                        { name: 'Banded Bicep Curl', sets: 3, reps: '15-20', image: 'IMG/banded_bicep_curl.jpg' },
+                        { name: 'Banded Tricep Extension', sets: 3, reps: '15-20', image: 'IMG/banded_tricep_extension.jpg' },
+                        { name: 'Banded Shoulder Press', sets: 3, reps: '15-20', image: 'IMG/banded_shoulder_press.jpg' }
                     ]
                 }
             ]
@@ -1096,12 +1096,12 @@ const DianaData = (function () {
     // ============================================
 
     const warmupOptions = [
-        { name: 'Roddmaskin', value: '2 km minst' },
-        { name: 'Crosstrainer', value: '10 min' },
-        { name: 'Gang/Jogg', value: '2-4 km' },
-        { name: 'Stairmaster', value: '10 min' },
-        { name: 'Jumping jacks', value: '3 min' },
-        { name: 'Jogga pa stallet', value: '5 min' }
+        { name: 'Roddmaskin', value: '2 km minst', image: 'IMG/roddmaskin.jpg' },
+        { name: 'Crosstrainer', value: '10 min', image: 'IMG/crosstrainer.jpg' },
+        { name: 'Gang/Jogg', value: '2-4 km', image: 'IMG/gang_jogg.jpg' },
+        { name: 'Stairmaster', value: '10 min', image: 'IMG/stairmaster.jpg' },
+        { name: 'Jumping jacks', value: '3 min', image: 'IMG/jumping_jacks.jpg' },
+        { name: 'Jogga pa stallet', value: '5 min', image: 'IMG/jogga_pa_stallet.jpg' }
     ];
 
     // ============================================

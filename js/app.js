@@ -584,14 +584,68 @@
             modal.classList.add('active');
         });
 
+        // Event listeners
         modal.querySelector('.modal-close').addEventListener('click', closeAllModals);
         modal.addEventListener('click', (e) => {
             if (e.target === modal) closeAllModals();
         });
 
+        // View Image Buttons
+        modal.querySelectorAll('.view-image-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const imageUrl = btn.dataset.image;
+                if (imageUrl) {
+                    openImageModal(imageUrl);
+                }
+            });
+        });
+
         modal.querySelector('.start-workout-btn').addEventListener('click', () => {
             closeAllModals();
             startActiveWorkout(pass, passKey);
+        });
+    }
+
+    function openImageModal(imageUrl) {
+        // Create modal container
+        const modal = document.createElement('div');
+        modal.className = 'image-modal-overlay';
+        modal.id = 'image-modal';
+
+        modal.innerHTML = `
+            <div class="image-modal-content">
+                <button class="image-modal-close" aria-label="Stäng bild">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+                <div class="image-container">
+                    <img src="${imageUrl}" alt="Övningsbild" class="full-screen-image">
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(modal);
+
+        requestAnimationFrame(() => {
+            modal.classList.add('active');
+        });
+
+        const closeBtn = modal.querySelector('.image-modal-close');
+        
+        function closeImageModal() {
+            modal.classList.remove('active');
+            setTimeout(() => modal.remove(), 300);
+        }
+
+        closeBtn.addEventListener('click', closeImageModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal || e.target.classList.contains('image-container')) {
+                closeImageModal();
+            }
         });
     }
 
@@ -602,7 +656,15 @@
                 ${imageHTML}
                 <div class="exercise-number">${idx + 1}</div>
                 <div class="exercise-content">
-                    <h4 class="exercise-name">${exercise.name}</h4>
+                    <div class="exercise-header-row">
+                        <h4 class="exercise-name">${exercise.name}</h4>
+                        ${exercise.image ? `<button class="view-image-btn" data-image="${exercise.image}" aria-label="Visa bild">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </button>` : ''}
+                    </div>
                     <div class="exercise-details">
                         <span class="exercise-sets">${exercise.sets} set</span>
                         <span class="exercise-reps">${exercise.reps} reps</span>
@@ -618,6 +680,12 @@
             <div class="superset-exercise">
                 ${ex.image ? `<div class="superset-ex-image" style="background-image: url('${ex.image}')"></div>` : `<span class="superset-letter">${String.fromCharCode(65 + i)}</span>`}
                 <span class="superset-name">${ex.name}</span>
+                ${ex.image ? `<button class="view-image-btn small" data-image="${ex.image}" aria-label="Visa bild">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                </button>` : ''}
                 <span class="superset-reps">${ex.reps} reps</span>
             </div>
         `).join('');
@@ -651,7 +719,15 @@
                 ${imageHTML}
                 <div class="exercise-number dropset-badge">DS</div>
                 <div class="exercise-content">
-                    <h4 class="exercise-name">${dropset.name}</h4>
+                    <div class="exercise-header-row">
+                        <h4 class="exercise-name">${dropset.name}</h4>
+                        ${dropset.image ? `<button class="view-image-btn" data-image="${dropset.image}" aria-label="Visa bild">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </button>` : ''}
+                    </div>
                     <div class="dropset-rounds">${dropset.rounds} rundor</div>
                     <div class="dropset-drops">
                         ${dropsHTML}
@@ -2620,6 +2696,66 @@
     }
 
     // ============================================
+    // Image Modal Functionality
+    // ============================================
+
+    function initImageModal() {
+        const modal = document.getElementById('image-modal');
+        const modalImg = document.getElementById('image-modal-img');
+        const modalClose = document.getElementById('image-modal-close');
+
+        if (!modal || !modalImg) return;
+
+        // Global event delegation for image clicks
+        document.body.addEventListener('click', (e) => {
+            const target = e.target;
+            const viewBtn = target.closest('.view-image-btn');
+
+            // Handle direct image clicks
+            if (target.classList.contains('exercise-image') || target.classList.contains('superset-ex-image')) {
+                // Get background image URL
+                const style = window.getComputedStyle(target);
+                let bgImage = style.backgroundImage;
+
+                // Extract URL from "url('...')"
+                if (bgImage && bgImage !== 'none') {
+                    // Remove "url(" and ")" and quotes
+                    bgImage = bgImage.replace(/^url\(['"]?/, '').replace(/['"]?\)$/, '');
+
+                    if (bgImage) {
+                        modalImg.src = bgImage;
+                        modal.classList.add('active');
+                        triggerHaptic('light');
+                    }
+                }
+            }
+            // Handle view button clicks
+            else if (viewBtn) {
+                const imgSrc = viewBtn.dataset.image;
+                if (imgSrc) {
+                    modalImg.src = imgSrc;
+                    modal.classList.add('active');
+                    triggerHaptic('light');
+                    e.stopPropagation(); // Prevent triggering other click events
+                }
+            }
+        });
+
+        // Close events
+        if (modalClose) {
+            modalClose.addEventListener('click', () => {
+                modal.classList.remove('active');
+            });
+        }
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
+    }
+
+    // ============================================
     // Initialize App
     // ============================================
 
@@ -2640,6 +2776,7 @@
         initEventListeners();
         initSettingsEvents();
         initShoppingListEvents();
+        initImageModal();
         generateCalendar();
 
         if (isStandalone()) {
