@@ -1108,24 +1108,44 @@ const DianaData = (function () {
     // Public API
     // ============================================
 
+    // Helper to get additional recipes if module exists
+    function getAdditionalRecipes(category) {
+        if (typeof DianaAdditionalRecipes === 'undefined') return [];
+        switch (category) {
+            case 'breakfast': return DianaAdditionalRecipes.additionalBreakfastRecipes || [];
+            case 'lunch': return DianaAdditionalRecipes.additionalLunchRecipes || [];
+            case 'dinner': return DianaAdditionalRecipes.additionalDinnerRecipes || [];
+            default: return DianaAdditionalRecipes.getAllAdditionalRecipes ? DianaAdditionalRecipes.getAllAdditionalRecipes() : [];
+        }
+    }
+
+    // Helper to get expanded workouts if module exists
+    function getExpandedWorkouts() {
+        if (typeof DianaAdditionalExercises === 'undefined') return {};
+        return DianaAdditionalExercises.getAllExpandedWorkouts ? DianaAdditionalExercises.getAllExpandedWorkouts() : {};
+    }
+
     return {
         // Nutrition
         nutritionInfo: nutritionInfo,
 
-        // Recipes
+        // Recipes (original arrays for backwards compatibility)
         breakfastRecipes: breakfastRecipes,
         lunchRecipes: lunchRecipes,
         dinnerRecipes: dinnerRecipes,
 
         getAllRecipes: function () {
-            return [...breakfastRecipes, ...lunchRecipes, ...dinnerRecipes];
+            // Merge original + additional recipes
+            const additional = getAdditionalRecipes('all');
+            return [...breakfastRecipes, ...lunchRecipes, ...dinnerRecipes, ...additional];
         },
 
         getRecipesByCategory: function (category) {
+            const additional = getAdditionalRecipes(category);
             switch (category) {
-                case 'breakfast': return breakfastRecipes;
-                case 'lunch': return lunchRecipes;
-                case 'dinner': return dinnerRecipes;
+                case 'breakfast': return [...breakfastRecipes, ...additional];
+                case 'lunch': return [...lunchRecipes, ...additional];
+                case 'dinner': return [...dinnerRecipes, ...additional];
                 default: return this.getAllRecipes();
             }
         },
@@ -1141,6 +1161,35 @@ const DianaData = (function () {
         plan3Exercises: plan3Exercises,
 
         getPlanExercises: function (planId) {
+            // Inject missing exercises into Plan 1 if available
+            if (planId === 1 && typeof DianaAdditionalExercises !== 'undefined' && DianaAdditionalExercises.missingPlan1Exercises) {
+                const missing = DianaAdditionalExercises.missingPlan1Exercises;
+
+                // Pass 1: Underkropp Gym - Add Core
+                const p1 = plan1Exercises['pass-1-gym'];
+                if (p1 && missing['Weighted Crunch'] && !p1.exercises.some(e => e.name === 'Weighted Crunch')) {
+                    p1.exercises.push(missing['Weighted Crunch']);
+                }
+
+                // Pass 2: Överkropp Hemma - Add Shoulders
+                const p2 = plan1Exercises['pass-2-home'];
+                if (p2 && missing['Banded Lateral Raise'] && !p2.exercises.some(e => e.name === 'Banded Lateral Raise')) {
+                    p2.exercises.push(missing['Banded Lateral Raise']);
+                }
+
+                // Pass 3: Underkropp Hemma - Add Core/Abs
+                const p3 = plan1Exercises['pass-3-home'];
+                if (p3 && missing['Dead Bug'] && !p3.exercises.some(e => e.name === 'Dead Bug')) {
+                    p3.exercises.push(missing['Dead Bug']);
+                }
+
+                // Pass 4: Överkropp Gym - Add Plate exercises
+                const p4 = plan1Exercises['pass-4-gym'];
+                if (p4 && missing['Plate Front Raise'] && !p4.exercises.some(e => e.name === 'Plate Front Raise')) {
+                    p4.exercises.push(missing['Plate Front Raise']);
+                }
+            }
+
             switch (planId) {
                 case 1: return plan1Exercises;
                 case 2: return plan2Exercises;
@@ -1149,8 +1198,27 @@ const DianaData = (function () {
             }
         },
 
-        // Extra Workouts
+        // Extra Workouts (merged with expanded versions)
         extraWorkouts: extraWorkouts,
+
+        getExtraWorkouts: function () {
+            // Merge original + expanded workouts
+            const expanded = getExpandedWorkouts();
+
+            // Start with original workouts
+            const merged = { ...extraWorkouts };
+
+            // Override with full versions if available
+            // This ensures the UI buttons for 'gummiband' and 'helkropp' open the full versions
+            if (expanded['gummiband-full']) {
+                merged['gummiband'] = expanded['gummiband-full'];
+            }
+            if (expanded['helkropp-full']) {
+                merged['helkropp'] = expanded['helkropp-full'];
+            }
+
+            return { ...merged, ...expanded };
+        },
 
         // Guidelines
         restTimeGuidelines: restTimeGuidelines,
