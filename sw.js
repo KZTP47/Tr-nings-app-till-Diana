@@ -3,9 +3,9 @@
  * Handles caching for offline functionality
  */
 
-const CACHE_NAME = 'diana-fitness-v8';
-const STATIC_CACHE_NAME = 'diana-fitness-static-v8';
-const DYNAMIC_CACHE_NAME = 'diana-fitness-dynamic-v8';
+const CACHE_NAME = 'diana-fitness-v13';
+const STATIC_CACHE_NAME = 'diana-fitness-static-v13';
+const DYNAMIC_CACHE_NAME = 'diana-fitness-dynamic-v13';
 
 // Files to cache immediately on install
 const STATIC_ASSETS = [
