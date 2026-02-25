@@ -382,13 +382,6 @@
                     ` : ''}
                 </div>
                 <div class="modal-footer">
-                    <button class="add-to-shopping-btn" id="log-meal-btn" style="margin-right: 8px; background-color: var(--color-accent); color: white; border: none;">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                        </svg>
-                        Logga måltid
-                    </button>
                     <button class="add-to-shopping-btn" id="add-to-shopping-btn">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="9" cy="21" r="1"></circle>
@@ -431,18 +424,6 @@
             handleAddToShoppingList(recipe, currentPortions);
         });
 
-        // Log meal button
-        modal.querySelector('#log-meal-btn').addEventListener('click', () => {
-            if (typeof NutritionTracker !== 'undefined') {
-                NutritionTracker.addMeal(recipe, currentPortions);
-                triggerHaptic('medium');
-                showToast(`Loggade ${currentPortions} portioner`);
-                closeAllModals();
-            } else {
-                showToast('Nutrition tracker ej laddad');
-            }
-        });
-
         requestAnimationFrame(() => {
             modal.classList.add('active');
         });
@@ -451,26 +432,6 @@
         modal.addEventListener('click', (e) => {
             if (e.target === modal) closeAllModals();
         });
-    }
-
-    function updateNutritionHero() {
-        if (typeof NutritionTracker === 'undefined') return;
-
-        const stats = NutritionTracker.getDailyStats();
-        const hero = document.getElementById('screen-recipes');
-        if (!hero) return;
-
-        // Update Calories
-        const title = hero.querySelector('.hero-title');
-        if (title) title.textContent = `${Math.round(stats.calories)} / 1600 kcal`;
-
-        // Update Macros
-        const values = hero.querySelectorAll('.macro-value');
-        if (values.length >= 3) {
-            values[0].textContent = `${Math.round(stats.protein)}g`; // Protein
-            values[1].textContent = `${Math.round(stats.carbs)}g`;   // Carbs
-            values[2].textContent = `${Math.round(stats.fat)}g`;     // Fat
-        }
     }
 
     // ============================================
@@ -1534,24 +1495,16 @@
             const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
             const workoutsOnDay = state.workoutHistory.filter(w => w.date === dateString);
 
-            if (workoutsOnDay.length > 0 || (typeof NutritionTracker !== 'undefined' && NutritionTracker.hasLog(dateString))) {
+            if (workoutsOnDay.length > 0) {
                 const indicators = document.createElement('div');
                 indicators.className = 'calendar-day-indicators';
 
-                if (workoutsOnDay.length > 0) {
-                    const workoutDot = document.createElement('span');
-                    workoutDot.className = 'calendar-day-dot workout';
-                    indicators.appendChild(workoutDot);
-                    dayElement.classList.add('has-workout');
-                }
-
-                if (typeof NutritionTracker !== 'undefined' && NutritionTracker.hasLog(dateString)) {
-                    const nutritionDot = document.createElement('span');
-                    nutritionDot.className = 'calendar-day-dot nutrition';
-                    indicators.appendChild(nutritionDot);
-                }
+                const workoutDot = document.createElement('span');
+                workoutDot.className = 'calendar-day-dot workout';
+                indicators.appendChild(workoutDot);
 
                 dayElement.appendChild(indicators);
+                dayElement.classList.add('has-workout');
             }
 
             dayElement.addEventListener('click', () => handleDayClick(day, dateString));
@@ -2061,12 +2014,8 @@
                     startActiveWorkout(pass, nextPassKey);
                 }
                 break;
-            case 'show-all-exercises':
-                if (typeof ExerciseLibraryView !== 'undefined') {
-                    ExerciseLibraryView.show();
-                } else {
-                    showToast('Modulen laddades inte korrekt');
-                }
+            case 'free-workout':
+                showToast('Fritt pass kommer snart...');
                 break;
             default:
                 break;
@@ -2863,24 +2812,10 @@
         renderWorkoutList();
         renderShoppingScreen();
 
-        // Listen for nutrition updates
-        window.addEventListener('nutrition-updated', () => {
-            updateTrainingHero(); // Updates calories on home screen
-            updateNutritionHero(); // Updates nutrition card
-            if (state.currentScreen === 'calendar') generateCalendar();
-        });
-
         initEventListeners();
         initSettingsEvents();
         initShoppingListEvents();
         initImageModal();
-        if (typeof ExerciseLibraryView !== 'undefined') {
-            ExerciseLibraryView.init();
-        }
-        if (typeof NutritionTracker !== 'undefined') {
-            NutritionTracker.init();
-            updateNutritionHero();
-        }
         generateCalendar();
 
         if (isStandalone()) {

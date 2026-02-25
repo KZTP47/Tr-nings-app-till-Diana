@@ -1110,13 +1110,29 @@ const DianaData = (function () {
 
     // Helper to get additional recipes if module exists
     function getAdditionalRecipes(category) {
-        if (typeof DianaAdditionalRecipes === 'undefined') return [];
-        switch (category) {
-            case 'breakfast': return DianaAdditionalRecipes.additionalBreakfastRecipes || [];
-            case 'lunch': return DianaAdditionalRecipes.additionalLunchRecipes || [];
-            case 'dinner': return DianaAdditionalRecipes.additionalDinnerRecipes || [];
-            default: return DianaAdditionalRecipes.getAllAdditionalRecipes ? DianaAdditionalRecipes.getAllAdditionalRecipes() : [];
+        let recipes = [];
+
+        // Merge from DianaAdditionalRecipes (Kostupplägg 1-5)
+        if (typeof DianaAdditionalRecipes !== 'undefined') {
+            switch (category) {
+                case 'breakfast': recipes = recipes.concat(DianaAdditionalRecipes.additionalBreakfastRecipes || []); break;
+                case 'lunch': recipes = recipes.concat(DianaAdditionalRecipes.additionalLunchRecipes || []); break;
+                case 'dinner': recipes = recipes.concat(DianaAdditionalRecipes.additionalDinnerRecipes || []); break;
+                default: recipes = recipes.concat(DianaAdditionalRecipes.getAllAdditionalRecipes ? DianaAdditionalRecipes.getAllAdditionalRecipes() : []); break;
+            }
         }
+
+        // Merge from DianaRecipesK6 (Kostupplägg 6)
+        if (typeof DianaRecipesK6 !== 'undefined') {
+            switch (category) {
+                case 'breakfast': recipes = recipes.concat(DianaRecipesK6.k6BreakfastRecipes || []); break;
+                case 'lunch': recipes = recipes.concat(DianaRecipesK6.k6LunchRecipes || []); break;
+                case 'dinner': recipes = recipes.concat(DianaRecipesK6.k6DinnerRecipes || []); break;
+                default: recipes = recipes.concat(DianaRecipesK6.getAllK6Recipes ? DianaRecipesK6.getAllK6Recipes() : []); break;
+            }
+        }
+
+        return recipes;
     }
 
     // Helper to get expanded workouts if module exists
