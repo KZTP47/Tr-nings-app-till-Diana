@@ -918,17 +918,20 @@
             'use strict';
 
             const STORAGE_KEY_WEIGHTS = 'diana_workout_weights';
+            const STORAGE_KEY_REPS = 'diana_workout_reps';
             const STORAGE_KEY_VIEW_MODE = 'diana_workout_view_mode';
 
             let currentWorkout = null;
             let setData = {};
             let savedWeights = {};
+            let savedReps = {};
             let viewMode = 'list';
             let onCompleteCallback = null;
             let onCloseCallback = null;
 
             function init() {
                 loadSavedWeights();
+                loadSavedReps();
                 loadViewMode();
             }
 
@@ -941,6 +944,17 @@
 
             function saveWeights() {
                 try { localStorage.setItem(STORAGE_KEY_WEIGHTS, JSON.stringify(savedWeights)); } catch (e) { }
+            }
+
+            function loadSavedReps() {
+                try {
+                    const saved = localStorage.getItem(STORAGE_KEY_REPS);
+                    if (saved) savedReps = JSON.parse(saved);
+                } catch (e) { savedReps = {}; }
+            }
+
+            function saveReps() {
+                try { localStorage.setItem(STORAGE_KEY_REPS, JSON.stringify(savedReps)); } catch (e) { }
             }
 
             function loadViewMode() {
@@ -978,11 +992,14 @@
                     const sets = getExerciseSets(exercise);
                     sets.forEach((set, setIdx) => {
                         const savedWeight = getSavedWeight(exercise.name || 'Superset', setIdx);
+                        const savedRep = getSavedRep(exercise.name || 'Superset', setIdx);
                         setData[exerciseKey][setIdx] = {
-                            reps: set.reps,
+                            reps: set.reps, // target
+                            actualReps: savedRep || set.reps,
                             kg: savedWeight || '',
                             completed: false,
                             setLabel: set.label,
+                            isHeaderOnly: set.isHeaderOnly,
                             note: set.note || ''
                         };
                     });
@@ -999,13 +1016,11 @@
                     const drops = exercise.drops || [];
                     const rounds = exercise.rounds || 1;
                     if (drops.length > 0) {
-                        sets.push({ label: 'S', reps: drops[0]?.reps || 18, note: 'Startset' });
-                        drops.forEach((drop, idx) => {
-                            sets.push({ label: String(idx + 1), reps: drop.reps || 10, note: drop.note || '' });
-                        });
-                        const baseSets = [...sets];
-                        for (let r = 1; r < rounds; r++) {
-                            baseSets.forEach(s => sets.push({ ...s }));
+                        for (let r = 0; r < rounds; r++) {
+                            sets.push({ label: 'S', isHeaderOnly: true, note: `Set #${r + 1} - Se övningarna nedan` });
+                            drops.forEach((drop, idx) => {
+                                sets.push({ label: String(idx + 1), reps: drop.reps || 10, note: drop.note || '' });
+                            });
                         }
                     }
                 } else if (exercise.type === 'superset') {
@@ -1019,7 +1034,7 @@
                 } else {
                     const exerciseSets = exercise.sets || 3;
                     const exerciseReps = exercise.reps || '8-12';
-                    sets.push({ label: 'S', reps: typeof exerciseReps === 'string' ? (exerciseReps.split('-')[1] || exerciseReps) : exerciseReps, note: 'Uppvärmning' });
+                    sets.push({ label: 'S', isHeaderOnly: true, note: 'Uppvärmning' });
                     for (let i = 0; i < exerciseSets; i++) {
                         sets.push({ label: String(i + 1), reps: exerciseReps, note: '' });
                     }
@@ -1029,14 +1044,20 @@
 
             function getTotalSets() {
                 let total = 0;
-                Object.values(setData).forEach(exSets => { total += Object.keys(exSets).length; });
+                Object.values(setData).forEach(exSets => {
+                    Object.values(exSets).forEach(set => {
+                        if (!set.isHeaderOnly) total++;
+                    });
+                });
                 return total;
             }
 
             function getCompletedSets() {
                 let completed = 0;
                 Object.values(setData).forEach(exSets => {
-                    Object.values(exSets).forEach(set => { if (set.completed) completed++; });
+                    Object.values(exSets).forEach(set => {
+                        if (set.completed && !set.isHeaderOnly) completed++;
+                    });
                 });
                 return completed;
             }
@@ -1045,6 +1066,12 @@
             function updateSavedWeight(exerciseName, setIndex, weight) {
                 savedWeights[exerciseName + '_' + setIndex] = weight;
                 saveWeights();
+            }
+
+            function getSavedRep(exerciseName, setIndex) { return savedReps[exerciseName + '_' + setIndex] || ''; }
+            function updateSavedRep(exerciseName, setIndex, rep) {
+                savedReps[exerciseName + '_' + setIndex] = rep;
+                saveReps();
             }
 
             function renderListView() {
@@ -1100,7 +1127,11 @@
                     const isCompleted = set.completed;
                     const exerciseName = exercise.name || 'Superset';
                     const kgValue = set.kg !== undefined && set.kg !== '' ? set.kg : '';
-                    return '<div class="wl-set-row ' + (isCompleted ? 'completed' : '') + '" data-exercise-key="' + exerciseKey + '" data-set-idx="' + setIdx + '"><span class="wl-set-number">' + set.setLabel + '</span><span class="wl-set-reps">' + set.reps + ' reps</span><input type="number" class="wl-set-kg" value="' + kgValue + '" placeholder="kg" data-exercise-name="' + exerciseName + '" data-set-idx="' + setIdx + '" inputmode="decimal"><span class="wl-set-kg-label">kg</span><button class="wl-set-checkbox ' + (isCompleted ? 'checked' : '') + '" aria-label="' + (isCompleted ? 'Avmarkera set' : 'Markera set som klart') + '"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></button></div>';
+                    const actualRepsValue = set.actualReps !== undefined && set.actualReps !== '' ? set.actualReps : '';
+                    if (set.isHeaderOnly) {
+                        return '<div class="wl-set-row header-only" data-exercise-key="' + exerciseKey + '" data-set-idx="' + setIdx + '"><span class="wl-set-number">' + set.setLabel + '</span><span class="wl-set-header-text">' + set.note + '</span></div>';
+                    }
+                    return '<div class="wl-set-row ' + (isCompleted ? 'completed' : '') + '" data-exercise-key="' + exerciseKey + '" data-set-idx="' + setIdx + '"><span class="wl-set-number">' + set.setLabel + '</span><div class="wl-set-reps-container"><span class="wl-set-reps-target">' + set.reps + '</span><input type="number" class="wl-set-reps-input" value="' + actualRepsValue + '" placeholder="reps" data-exercise-name="' + exerciseName + '" data-set-idx="' + setIdx + '" inputmode="decimal"></div><input type="number" class="wl-set-kg" value="' + kgValue + '" placeholder="kg" data-exercise-name="' + exerciseName + '" data-set-idx="' + setIdx + '" inputmode="decimal"><span class="wl-set-kg-label">kg</span><button class="wl-set-checkbox ' + (isCompleted ? 'checked' : '') + '" aria-label="' + (isCompleted ? 'Avmarkera set' : 'Markera set som klart') + '"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></button></div>';
                 }).join('');
             }
 
@@ -1113,8 +1144,21 @@
                 });
                 view.querySelectorAll('.wl-set-row').forEach(row => {
                     row.addEventListener('click', (e) => {
+                        if (row.classList.contains('header-only')) return;
                         if (e.target.tagName !== 'INPUT' && !e.target.classList.contains('wl-set-checkbox')) toggleSetComplete(row);
                     });
+                });
+                view.querySelectorAll('.wl-set-reps-input').forEach(input => {
+                    input.addEventListener('change', (e) => {
+                        const exerciseName = e.target.dataset.exerciseName;
+                        const setIdx = e.target.dataset.setIdx;
+                        const rep = e.target.value;
+                        const row = e.target.closest('.wl-set-row');
+                        const exerciseKey = row.dataset.exerciseKey;
+                        if (setData[exerciseKey] && setData[exerciseKey][setIdx]) setData[exerciseKey][setIdx].actualReps = rep;
+                        updateSavedRep(exerciseName, setIdx, rep);
+                    });
+                    input.addEventListener('click', (e) => { e.stopPropagation(); });
                 });
                 view.querySelectorAll('.wl-set-kg').forEach(input => {
                     input.addEventListener('change', (e) => {
