@@ -3489,7 +3489,21 @@ button,
     cursor: pointer;
 }
 
-.wl-set-row:active {
+.wl-set-row.header-only {
+    background-color: transparent;
+    cursor: default;
+    border: 1px solid transparent;
+}
+
+.wl-set-header-text {
+    flex: 1;
+    font-size: var(--font-size-md);
+    font-weight: 700;
+    color: var(--color-text-primary);
+    padding-left: var(--spacing-xs);
+}
+
+.wl-set-row:not(.header-only):active {
     background: var(--color-surface-elevated);
 }
 
@@ -3509,6 +3523,44 @@ button,
     font-size: var(--font-size-sm);
     font-weight: 600;
     color: var(--color-text-secondary);
+}
+
+.wl-set-reps-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.wl-set-reps-target {
+    font-size: 11px;
+    color: var(--color-text-tertiary);
+    width: 36px;
+    text-align: right;
+}
+
+.wl-set-reps-input {
+    width: 55px;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-primary);
+    text-align: center;
+    appearance: textfield;
+    -moz-appearance: textfield;
+}
+
+.wl-set-reps-input::-webkit-outer-spin-button,
+.wl-set-reps-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.wl-set-reps-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
 }
 
 .wl-set-reps {
