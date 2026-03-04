@@ -709,14 +709,14 @@ const WorkoutListView = (function () {
     function completeWorkout() {
         const totalSets = getTotalSets();
         const completedSets = getCompletedSets();
-        const duration = Math.floor((Date.now() - currentWorkout.startTime) / 1000 / 60);
+        const durationSeconds = Math.floor((Date.now() - currentWorkout.startTime) / 1000);
 
         // Create workout summary
         const summary = {
             passKey: currentWorkout.passKey,
             passName: currentWorkout.passName,
             date: new Date().toISOString(),
-            duration: duration,
+            duration: durationSeconds,
             totalSets: totalSets,
             completedSets: completedSets,
             completionPercent: totalSets > 0 ? Math.round((completedSets / totalSets) * 100) : 0
@@ -727,6 +727,7 @@ const WorkoutListView = (function () {
     }
 
     function showCompletionModal(summary) {
+        const durationMinutes = Math.round(summary.duration / 60);
         const modal = document.createElement('div');
         modal.className = 'wl-modal-overlay';
         modal.id = 'completion-modal';
@@ -742,7 +743,7 @@ const WorkoutListView = (function () {
                 <h3 class="wl-modal-title">Bra jobbat!</h3>
                 <p class="wl-completion-stats">
                     Du genomförde ${summary.completedSets} av ${summary.totalSets} set (${summary.completionPercent}%)<br>
-                    Tid: ${summary.duration} minuter
+                    Tid: ${durationMinutes} minuter
                 </p>
                 <button class="wl-complete-confirm-btn">Stäng</button>
             </div>

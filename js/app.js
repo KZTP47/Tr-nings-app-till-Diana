@@ -762,16 +762,30 @@
         if (typeof WorkoutListView !== 'undefined' && WorkoutListView.getViewMode() === 'list') {
             WorkoutListView.startListWorkout(pass, passKey, {
                 onComplete: (summary) => {
-                    // Save workout to history
+                    // Extract local date in YYYY-MM-DD format based on local timezone
+                    let d = new Date();
+                    d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+                    const localDateStr = d.toISOString().split('T')[0];
+
+                    // Save workout to history consistently formatted
                     const workout = {
-                        date: summary.date,
+                        id: `workout-${Date.now()}`,
+                        date: localDateStr,
                         passKey: summary.passKey,
                         passName: summary.passName,
                         duration: summary.duration,
+                        exercises: pass.exercises ? pass.exercises.length : 0,
                         completedSets: summary.completedSets,
-                        totalSets: summary.totalSets
+                        totalSets: summary.totalSets,
+                        completedAt: Date.now()
                     };
                     state.workoutHistory.push(workout);
+
+                    // Keep only last 100 workouts
+                    if (state.workoutHistory.length > 100) {
+                        state.workoutHistory.shift();
+                    }
+
                     saveToStorage('workoutHistory', state.workoutHistory);
                     updateCalendarStats();
                 },
@@ -1284,9 +1298,13 @@
         const workout = state.activeWorkout;
         const duration = Math.floor((Date.now() - workout.startTime) / 1000);
 
+        let d = new Date();
+        d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+        const localDateStr = d.toISOString().split('T')[0];
+
         const workoutRecord = {
             id: `workout-${Date.now()}`,
-            date: new Date().toISOString().split('T')[0],
+            date: localDateStr,
             passKey: workout.passKey,
             passName: workout.passName,
             duration: duration,
@@ -1395,7 +1413,28 @@
     }
 
     function loadWorkoutHistory() {
-        state.workoutHistory = loadFromStorage('workoutHistory', []);
+        const history = loadFromStorage('workoutHistory', []);
+
+        // Data Migration: Fixed bug with duration and date formatting
+        let migrated = false;
+        history.forEach(w => {
+            // Fix full ISO date string back to 'YYYY-MM-DD'
+            if (w.date && typeof w.date === 'string' && w.date.includes('T')) {
+                w.date = w.date.split('T')[0];
+                migrated = true;
+            }
+            // Fix duration stored in minutes (usually < 180) instead of seconds
+            if (w.duration !== undefined && w.duration > 0 && w.duration <= 180) {
+                w.duration = w.duration * 60;
+                migrated = true;
+            }
+        });
+
+        if (migrated) {
+            saveToStorage('workoutHistory', history);
+        }
+
+        state.workoutHistory = history;
     }
 
     // ============================================
@@ -2541,9 +2580,24 @@
                 </div>
             `).join('');
 
+            // Add click listeners to open recipe
+            elements.shoppingRecipes.querySelectorAll('.recipe-chip').forEach(chip => {
+                chip.addEventListener('click', (e) => {
+                    if (e.target.closest('.recipe-chip-remove')) return;
+
+                    const recipeId = chip.dataset.recipeId;
+                    const recipe = DianaData.getRecipeById(recipeId);
+                    if (recipe) {
+                        openRecipeModal(recipe);
+                        triggerHaptic('light');
+                    }
+                });
+            });
+
             // Add remove listeners
             elements.shoppingRecipes.querySelectorAll('.recipe-chip-remove').forEach(btn => {
                 btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
                     const chip = e.target.closest('.recipe-chip');
                     if (chip) {
                         removeRecipeFromShoppingList(chip.dataset.recipeId);
@@ -2795,13 +2849,152 @@
     }
 
     // ============================================
+    // Manual Add Workout
+    // ============================================
+
+    function openManualAddWorkoutModal() {
+        const modal = document.createElement('div');
+        modal.className = 'confirm-modal-overlay';
+
+        // Build pass options dynamically
+        let optionsHtml = '';
+        if (typeof DianaData !== 'undefined' && DianaData.trainingPlans) {
+            DianaData.trainingPlans.forEach(plan => {
+                optionsHtml += `<optgroup label="${plan.name}">`;
+                // Try to find the associated exercises for this plan
+                let passKeys = [];
+                if (plan.id === 'plan-1' && typeof DianaData.plan1Exercises !== 'undefined') passKeys = Object.keys(DianaData.plan1Exercises);
+                if (plan.id === 'plan-2' && typeof DianaData.plan2Exercises !== 'undefined') passKeys = Object.keys(DianaData.plan2Exercises);
+                if (plan.id === 'plan-3' && typeof DianaData.plan3Exercises !== 'undefined') passKeys = Object.keys(DianaData.plan3Exercises);
+
+                passKeys.forEach(pk => {
+                    let pName = 'Pass';
+                    if (plan.id === 'plan-1') pName = DianaData.plan1Exercises[pk].name;
+                    if (plan.id === 'plan-2') pName = DianaData.plan2Exercises[pk].name;
+                    if (plan.id === 'plan-3') pName = DianaData.plan3Exercises[pk].name;
+                    optionsHtml += `<option value="${pk}" data-name="${pName}">${pName} (${pk})</option>`;
+                });
+                optionsHtml += `</optgroup>`;
+            });
+        }
+
+        // Default today's date
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        const dd = String(today.getDate()).padStart(2, '0');
+        const todayStr = `${yyyy}-${mm}-${dd}`;
+
+        modal.innerHTML = `
+            <div class="confirm-modal" style="text-align: left;">
+                <h3 class="confirm-modal-title">Lägg till gammalt pass</h3>
+                <p class="confirm-modal-text" style="text-align: left; margin-bottom: 20px;">Välj datum, pass och tid för att lägga till ett tidigare pass i historiken.</p>
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 5px;">Datum</label>
+                    <input type="date" id="manual-add-date" value="${todayStr}" max="${todayStr}" style="width: 100%; padding: 12px; border-radius: var(--radius-md); background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-primary); outline: none;">
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 5px;">Pass</label>
+                    <select id="manual-add-pass" style="width: 100%; padding: 12px; border-radius: var(--radius-md); background: rgba(50,50,50,1); border: 1px solid rgba(255,255,255,0.1); color: var(--text-primary); outline: none;">
+                        ${optionsHtml}
+                        <option value="custom" data-name="Eget Pass">Annat/Eget Pass</option>
+                    </select>
+                </div>
+                
+                <div style="margin-bottom: 25px;">
+                    <label style="display: block; font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 5px;">Tid (minuter)</label>
+                    <input type="number" id="manual-add-duration" value="45" min="1" max="300" style="width: 100%; padding: 12px; border-radius: var(--radius-md); background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-primary); outline: none;">
+                </div>
+
+                <div class="confirm-modal-buttons">
+                    <button class="confirm-modal-btn danger" id="manual-add-cancel">Avbryt</button>
+                    <button class="confirm-modal-btn danger" style="background: var(--primary-color);" id="manual-add-save">Spara</button>
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(modal);
+
+        requestAnimationFrame(() => {
+            modal.classList.add('active');
+        });
+
+        const closeBtn = document.getElementById('manual-add-cancel');
+        const saveBtn = document.getElementById('manual-add-save');
+
+        const close = () => {
+            modal.classList.remove('active');
+            setTimeout(() => modal.remove(), 200);
+        };
+
+        closeBtn.addEventListener('click', close);
+
+        saveBtn.addEventListener('click', () => {
+            const dateVal = document.getElementById('manual-add-date').value;
+            const passSelect = document.getElementById('manual-add-pass');
+            const passKey = passSelect.value;
+            const passName = passSelect.options[passSelect.selectedIndex].getAttribute('data-name') || 'Träningspass';
+            const durationMin = parseInt(document.getElementById('manual-add-duration').value) || 45;
+
+            if (!dateVal) return;
+
+            // Add to history
+            const workout = {
+                id: 'manual-' + Date.now(),
+                date: dateVal, // YYYY-MM-DD
+                passKey: passKey,
+                passName: passName,
+                duration: durationMin * 60, // store as seconds
+                exercises: 5, // mock assumed value
+                completedSets: 15,
+                totalSets: 15,
+                completedAt: new Date(dateVal).getTime()
+            };
+
+            state.workoutHistory.push(workout);
+            // Sort history by date desc
+            state.workoutHistory.sort((a, b) => new Date(b.date) - new Date(a.date));
+            saveToStorage('workoutHistory', state.workoutHistory);
+
+            triggerHaptic('medium');
+            updateCalendarStats();
+            generateCalendar(); // update rendering
+
+            close();
+
+            // Show toast
+            const existingToast = document.querySelector('.toast');
+            if (existingToast) existingToast.remove();
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerHTML = `<svg class="toast-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg><span>Passet lades till!</span>`;
+            document.body.appendChild(toast);
+            requestAnimationFrame(() => toast.classList.add('active'));
+            setTimeout(() => { toast.classList.remove('active'); setTimeout(() => toast.remove(), 300); }, 2500);
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) close();
+        });
+    }
+
+    function initManualAddWorkout() {
+        const manualBtn = document.getElementById('manual-add-btn');
+        if (manualBtn) {
+            manualBtn.addEventListener('click', openManualAddWorkoutModal);
+        }
+    }
+
+    // ============================================
     // Initialize App
     // ============================================
 
     function init() {
         console.log('Diana Fitness PWA initializing (Phase 6)...');
 
-        registerServiceWorker();
+        // registerServiceWorker(); // Disabled to fix CORS/null protocol errors when running locally
         applySavedTheme();
         loadSavedState();
         loadShoppingList();
@@ -2817,6 +3010,7 @@
         initShoppingListEvents();
         initImageModal();
         generateCalendar();
+        initManualAddWorkout();
 
         if (isStandalone()) {
             console.log('Running in standalone mode');
